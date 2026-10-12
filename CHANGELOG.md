@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - A sixth check in `Quality`: the links at the foot of `CHANGELOG.md` name the repository the check runs in, so an adoption that forgets to rewrite them fails on its pull request (#14).
 
+### Changed
+
+- `AGENTS.md` §8 lists what the adoption keeps in `ARCHITECTURE.md` (the invariant subsections, the npm paragraph, the workflows), drops the RN citations and the *Kept*/*Rewritten* markers, and rewrites `README.md` whole, so following it to the letter leaves no kept text pointing at something it removed (#15).
+
 ### Fixed
 
 - A repository created from `memorysmithapp-template` no longer receives a `v0.1.0` tag and Release of the template on its initial commit: `Release` publishes only when the links at the foot of `CHANGELOG.md` name the repository it runs in (#14).

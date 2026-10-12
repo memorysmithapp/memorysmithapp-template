@@ -99,12 +99,20 @@ Each command with the directory it runs in, what it does, and the date somebody 
 
 *Kept in `memorysmithapp-template`; deleted from a repository once it is adopted.*
 
-A repository created from `memorysmithapp-template` holds a copy of these files and nothing else. Its first session, on the branch `release/v0.1.0`, adopts it in one commit:
+A repository created from `memorysmithapp-template` holds a copy of these files and nothing else. Its first session, on the branch `release/v0.1.0`, adopts it in one commit. Followed as written, the result passes `Quality`, and no kept text points at something the adoption removed.
 
-1. **Identity:** rewrite §1 of this file and the presentation of `README.md` for the new project; set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`.
-2. **`PRD.md` and `ARCHITECTURE.md`:** empty them down to their skeletons, keeping each heading and the one-line instruction under it; the ADR section keeps its format and starts empty.
-3. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
-4. **Kept:** `SDLC.md`, `CLAUDE.md`, §2–§7 of this file, `.github/workflows/`, `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests stay as they are; §6 keeps only the commands re-run in the new repository, with that date.
-5. **Deleted:** this section, and `scripts/setup-repo.sh`, which the owner runs once before the adoption ([`README.md`](README.md#apply-the-settings-a-copy-does-not-carry)).
+1. **Identity:** rewrite §1 of this file for the new project, and `README.md` whole: what the project is, how to start, and the documents it has. Set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`.
+2. **`PRD.md`:** empty it down to its skeleton: each heading and the *Instruction* line under it. Its rule codes start again from `001`.
+3. **`ARCHITECTURE.md`:** empty it down to its skeleton, except what the kept documents rely on:
+   - §2 keeps the rows of the files the adoption keeps;
+   - §3 keeps the subsections INV-01 to INV-05 with their headings unchanged, since §5 of this file links to them, and rewrites each mechanism for the new repository;
+   - §4 keeps the npm paragraph, a fact of the organisation that `SDLC.md` §10 points at;
+   - §5 keeps what the workflows *Quality* and *Release* do;
+   - §6 keeps its format and starts with no record.
+4. **Rule codes:** remove the citations of RN codes from §5 of this file and from `ARCHITECTURE.md`. They name rules of `memorysmithapp-template`, not of the new project.
+5. **Markers:** remove every *Kept on adoption* and *Rewritten on adoption* line, and the sentences about adoption at the top of this file, `PRD.md`, `ARCHITECTURE.md` and `SDLC.md`: in a repository that is not a template they describe nothing. The *Instruction* lines of the skeletons stay until their sections are filled.
+6. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
+7. **Kept as they are:** `SDLC.md`, `CLAUDE.md`, §2–§7 of this file, `.github/workflows/`, `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests. §6 keeps only the commands re-run in the new repository, with that date.
+8. **Deleted:** this section, and `scripts/setup-repo.sh`, which the owner runs once before the adoption.
 
 Then the owner fills `PRD.md` and `ARCHITECTURE.md` with the project, issue by issue.

@@ -123,4 +123,4 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-REP-001 | After a run, `gh api repos/<r>/rulesets/<id>` returns the same ruleset as this repository's, except identifiers and timestamps |
 | RN-REP-002 | A second run reports nothing changed; a run without its three arguments, without `gh` or `jq`, or without administrator rights exits non-zero with the reason |
 | RN-REP-003 | `pnpm test` passes, with a test per check failing on a deliberate violation; a pull request whose `Quality` fails cannot be merged |
-| RN-ADO-001 | Following `AGENTS.md` §8 in a created repository yields a coherent repository empty of this one's content, with the process intact |
+| RN-ADO-001 | Following `AGENTS.md` §8 to the letter in a created repository yields a repository empty of this one's content, with the process intact, where `Quality` passes and no kept text points at something the adoption removed |
