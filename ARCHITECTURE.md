@@ -13,7 +13,7 @@ Claims carry their status when it is not obvious: *observed*, *declared*, *infer
 The repository carries no product code. It is made of:
 
 - **Documents**, the core of what it delivers: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` maps the reading and the writing onto `PRD.md`, `ARCHITECTURE.md`, `SDLC.md` and `README.md`, and states the limits and invariants in one line each; `CHANGELOG.md` records what each version changed.
-- **Repository files:** `LICENSE`.
+- **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
 - **GitHub configuration** that a copy does not carry: the ruleset `main` of this repository.
 
 Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an invariant is stated in `AGENTS.md` and its mechanism here; a rule is stated in `PRD.md` and enforced where §3 says.
@@ -31,6 +31,9 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `SDLC.md` | How a change travels from an issue to a release |
 | `README.md` | What this is and how to start |
 | `CHANGELOG.md` | What changed in each version, in Keep a Changelog 1.1.0 |
+| `package.json` | The one home of the version (`version`), and the package manager pinned (`packageManager`); private, named `@memorysmithapp/template` |
+| `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files |
+| `.editorconfig` | UTF-8, LF, two spaces, final newline |
 | `LICENSE` | The MIT licence |
 
 ## 3. Invariants and their mechanisms
