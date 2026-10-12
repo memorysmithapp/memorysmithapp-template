@@ -108,18 +108,17 @@ A repository created from `memorysmithapp-template` holds a copy of these files 
 
 The commit does what follows. Followed as written, the result passes `Quality`, and no kept text points at something the adoption removed.
 
-1. **Identity:** rewrite §1 of this file for the new project, and `README.md` whole: what the project is, how to start, the command of `scripts/setup-repo.sh`, and the documents it has. Set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`.
-2. **`PRD.md`:** empty it down to its skeleton: each heading and the *Instruction* line under it. Its rule codes start again from `001`.
-3. **`ARCHITECTURE.md`:** empty it down to its skeleton, except what the kept documents rely on:
-   - §2 keeps the rows of the files the adoption keeps;
-   - §3 keeps the subsections INV-01 to INV-05 with their headings unchanged, since §5 of this file links to them, and rewrites each mechanism for the new repository;
-   - §4 keeps the npm paragraph, a fact of the organisation that `SDLC.md` §10 points at;
-   - §5 keeps what the workflows *Quality* and *Release* do;
-   - §6 keeps its format and starts with no record.
-4. **Rule codes:** remove the citations of RN codes from §5 of this file and from `ARCHITECTURE.md`. They name rules of `memorysmithapp-template`, not of the new project.
-5. **Markers:** remove every *Kept on adoption* and *Rewritten on adoption* line, and the sentences about adoption at the top of this file, `PRD.md`, `ARCHITECTURE.md` and `SDLC.md`: in a repository that is not a template they describe nothing. The *Instruction* lines of the skeletons stay until their sections are filled.
-6. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
-7. **Kept as they are:** `SDLC.md`, `CLAUDE.md`, §2–§7 of this file, `.github/workflows/`, `scripts/setup-repo.sh` (the mechanism of INV-03, run again whenever the ruleset drifts), `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests. §6 keeps only the commands re-run in the new repository, with that date.
-8. **Deleted:** this section.
+1. **Identity:** rewrite §1 of this file for the new project, and `README.md` whole: what the project is, how to start, the command of `scripts/setup-repo.sh` with the description and topics the owner used, and the documents it has. Set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`. Ask the owner what the repository does not say, such as its visibility.
+2. **Skeletons:** `PRD.md` and `ARCHITECTURE.md` keep their title, the sentence saying what the document answers, the paragraph on the status of claims, and each heading with the *Instruction* line under it. The rule codes of `PRD.md` start again from `001`. `ARCHITECTURE.md` also keeps what the kept documents rely on:
+   - §2: the row of every file the adoption keeps, updated for the new repository (its package name; `AGENTS.md` without this section);
+   - §3: the subsections INV-01 to INV-05, headings unchanged since §5 of this file links to them; a mechanism is rewritten only where the new repository differs, such as the id of its ruleset;
+   - §4: the npm paragraph, a fact of the organisation that `SDLC.md` §10 points at;
+   - §5: what the workflows *Quality* and *Release* do;
+   - §6: its format paragraph, and no record.
+3. **The template's history:** remove from every kept text the citations of `memorysmithapp-template`'s RN codes, ADRs and issue numbers. They name its rules, records and issues: in the new repository an ADR link would not resolve, and `#N` would name an unrelated issue. The sentence stays; only the citation goes.
+4. **Markers:** remove every *Kept on adoption* and *Rewritten on adoption* marker, and the paragraph at the top of this file about them: in a repository that is not a template they describe nothing. Where a marker shares a line with another sentence, only the marker goes. The *Instruction* lines stay until their sections are filled.
+5. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry, under `Changed`, records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
+6. **Kept:** `SDLC.md` (but for step 4), `CLAUDE.md`, §2–§7 of this file, `.github/workflows/`, `scripts/setup-repo.sh` (the mechanism of INV-03, run again whenever the ruleset drifts), `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests. §6 keeps the commands run in the new repository, with that date; the owner's run of `scripts/setup-repo.sh` counts, with the date the owner gives.
+7. **Deleted:** this section.
 
 Then the owner fills `PRD.md` and `ARCHITECTURE.md` with the project, issue by issue.
