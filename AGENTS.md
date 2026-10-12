@@ -68,7 +68,7 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 
 - **INV-01** The version has exactly one home, the root `package.json`, and `CHANGELOG.md` agrees with it; RN-VER-001 ([mechanism](ARCHITECTURE.md#inv-01-the-version-has-one-home)).
 - **INV-02** `CLAUDE.md` is exactly `@AGENTS.md` and nothing else; RN-DOC-002 ([mechanism](ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
-- **INV-03** `main` changes only through a pull request ([mechanism](ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
+- **INV-03** `main` changes only through a pull request; RN-REP-001 ([mechanism](ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
 - **INV-04** Only the release workflow writes a tag, and a version names one commit ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
 
 ## 6. Verified commands
@@ -77,7 +77,9 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 
 Each command with the directory it runs in, what it does, and the date somebody last ran it and saw it work. A command nobody ran is never listed.
 
-None yet.
+| Command | Run in | What it does | Last verified |
+|---|---|---|---|
+| `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, and the ruleset `main`; idempotent | 2026-10-12, against a throwaway repository |
 
 ## 7. Before calling something done
 
@@ -100,6 +102,6 @@ A repository created from `memorysmithapp-template` holds a copy of these files 
 2. **`PRD.md` and `ARCHITECTURE.md`:** empty them down to their skeletons, keeping each heading and the one-line instruction under it; the ADR section keeps its format and starts empty.
 3. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an empty `[Unreleased]` whose first entry records the adoption.
 4. **Kept:** `SDLC.md`, `CLAUDE.md`, and §2–§7 of this file stay as they are; §6 is emptied until its commands are verified in the new repository.
-5. **Deleted:** this section.
+5. **Deleted:** this section, and `scripts/setup-repo.sh`, which the owner runs once before the adoption ([`README.md`](README.md#apply-the-settings-a-copy-does-not-carry)).
 
 Then the owner fills `PRD.md` and `ARCHITECTURE.md` with the project, issue by issue.

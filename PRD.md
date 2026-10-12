@@ -73,7 +73,7 @@ Every new repository of the `memorysmithapp` organisation starts empty and redis
 
 *Instruction: what the product provides, as business rules with codes `RN-{AREA}-{NNN}`.*
 
-Codes are append-only: never renumbered, never reused. A rule that stops holding stays on its own line, marked **Removed** with the version and the reason. Areas: `DOC` (documents), `VER` (version and changelog), `ADO` (adoption).
+Codes are append-only: never renumbered, never reused. A rule that stops holding stays on its own line, marked **Removed** with the version and the reason. Areas: `DOC` (documents), `VER` (version and changelog), `REP` (repository settings), `ADO` (adoption).
 
 | Code | Rule | Status |
 |---|---|---|
@@ -86,7 +86,9 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-DOC-007 | Everything in the repository is written in American English (en-US) | declared |
 | RN-VER-001 | The version lives in the `version` field of the root `package.json`, and nowhere else | declared |
 | RN-VER-002 | `CHANGELOG.md` follows Keep a Changelog 1.1.0: `[Unreleased]` on top, its categories only, compare links at the foot | declared |
-| RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes | declared |
+| RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
+| RN-REP-002 | `scripts/setup-repo.sh` is idempotent, reports what it changed and what was in place, and fails loudly on a missing argument, tool or permission | declared; *observed* on a throwaway repository (#7) |
+| RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes, `scripts/setup-repo.sh` included | declared |
 
 ## 8. Quality requirements
 
@@ -112,4 +114,6 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-DOC-007 | The repository's text, commits, branches, issues and PRs are in en-US |
 | RN-VER-001 | `version` appears in the root `package.json` and in no document |
 | RN-VER-002 | `CHANGELOG.md` opens with `[Unreleased]`, uses only Keep a Changelog categories, and has a link definition for every section |
+| RN-REP-001 | After a run, `gh api repos/<r>/rulesets/<id>` returns the same ruleset as this repository's, except identifiers and timestamps |
+| RN-REP-002 | A second run reports nothing changed; a run without its three arguments, without `gh` or `jq`, or without administrator rights exits non-zero with the reason |
 | RN-ADO-001 | Following `AGENTS.md` §8 in a created repository yields a coherent repository empty of this one's content, with the process intact |

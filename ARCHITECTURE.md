@@ -14,7 +14,8 @@ The repository carries no product code. It is made of:
 
 - **Documents**, the core of what it delivers: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` maps the reading and the writing onto `PRD.md`, `ARCHITECTURE.md`, `SDLC.md` and `README.md`, and states the limits and invariants in one line each; `CHANGELOG.md` records what each version changed.
 - **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
-- **GitHub configuration** that a copy does not carry: the ruleset `main` of this repository.
+- **A setup script**, `scripts/setup-repo.sh`, which applies to a created repository the GitHub configuration a copy does not carry; it is deleted by the adoption.
+- **GitHub configuration**: the ruleset `main` and the settings the script applies.
 
 Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an invariant is stated in `AGENTS.md` and its mechanism here; a rule is stated in `PRD.md` and enforced where §3 says.
 
@@ -32,6 +33,7 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `README.md` | What this is and how to start |
 | `CHANGELOG.md` | What changed in each version, in Keep a Changelog 1.1.0 |
 | `package.json` | The one home of the version (`version`), and the package manager pinned (`packageManager`); private, named `@memorysmithapp/template` |
+| `scripts/setup-repo.sh` | Applies the settings a copy does not carry to a created repository (RN-REP-001, RN-REP-002); uses only `gh` and `jq`. Kept here, deleted by the adoption |
 | `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files |
 | `.editorconfig` | UTF-8, LF, two spaces, final newline |
 | `LICENSE` | The MIT licence |
@@ -60,7 +62,7 @@ The version lives in the `version` field of the root `package.json` and nowhere 
 - `non_fast_forward`: no force push;
 - `pull_request`: every change through a pull request, with 0 required approvals, merge, squash and rebase allowed.
 
-Nobody can bypass it, administrators included (`current_user_can_bypass: never`, *observed*). A ruleset is a setting of the repository, not a file, so a created repository does not receive it.
+Nobody can bypass it, administrators included (`current_user_can_bypass: never`, *observed*). A ruleset is a setting of the repository, not a file, so a created repository does not receive it: **`scripts/setup-repo.sh`** creates it there, or brings it back to this definition when it drifted (RN-REP-001). The script defines the ruleset in its own source and compares, rule by rule, only the parameters it sets, so a parameter GitHub fills in by default does not count as drift. Run against a throwaway repository, the ruleset it created was identical to this repository's, identifiers and timestamps aside, and a second run changed nothing (*observed*, #7).
 
 ### INV-04 Only the release workflow writes a tag
 
@@ -75,7 +77,7 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 **GitHub.**
 
 - *Template repositories:* a repository is created from this one with *Use this template* or `gh repo create --template`, receiving a copy of the files of the default branch in one initial commit, with no link back and no settings ([ADR-004](#adr-004-a-github-template-repository-copied-once)). This repository is not marked as a template yet (*observed*); #10 tracks it.
-- *Rulesets:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request).
+- *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
 - *Issues and milestones:* GitHub's blank issue and default labels; a milestone per version ([ADR-005](#adr-005-githubs-defaults-for-issues-pull-requests-and-labels)).
 
 **npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). This repository publishes none.
@@ -84,7 +86,7 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 
 *Instruction: what runs, where, with which permissions and secrets.*
 
-Nothing runs: the repository has no workflow, no deployable and no secret.
+No workflow runs, and there is no deployable and no secret. `scripts/setup-repo.sh` runs on a person's machine, once per created repository, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
 
 ## 6. Architecture decision records
 
