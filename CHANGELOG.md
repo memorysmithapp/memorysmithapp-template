@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
+- `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
 [unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/memorysmithapp/memorysmithapp-template/releases/tag/v0.1.0

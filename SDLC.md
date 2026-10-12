@@ -210,6 +210,8 @@ The bump flow, in this order:
 
 Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, so running it again is safe.
 
+**A repository that publishes to npm** adds to this flow the publish of the cut version, from the workflow that releases it, through npm trusted publishing; its packages declare `"publishConfig": { "access": "public" }`, and every package not meant to be published declares `"private": true`. Why both fields are required is in [`ARCHITECTURE.md` §4](ARCHITECTURE.md#4-integrations) (npm).
+
 When a cycle is cut, every issue delivered in it is closed already ([§5](#5-when-an-issue-closes)), and the ones left behind move to the milestone of the next version: an accepted issue nobody reassessed is a silent promise.
 
 ## 11. Rollback

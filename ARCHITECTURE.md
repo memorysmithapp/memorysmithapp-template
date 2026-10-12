@@ -99,7 +99,11 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 
 - *Actions:* the workflows *Quality* and *Release* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack.
 
-**npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). This repository publishes none.
+**npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). The npm organisation `memorysmithapp` exists since 2026-10-12, which reserves the scope, and is on the **free plan, which publishes public packages only**; a private package would need the paid Teams plan (*declared* by the owner in #1). No npm token exists (*declared*). Therefore, in the `package.json` of every repository of the organisation:
+
+- **A package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`.** npm publishes a scoped package as *restricted* by default, and on the free plan that publish fails with `402 Payment Required`; written in `package.json`, the access does not depend on somebody remembering `--access public`.
+- **A package never meant to be published declares `"private": true`**, which stops `npm publish` whatever the plan. The root `package.json` of this repository is one: this repository publishes nothing.
+- **Publishing from CI goes through npm *trusted publishing* from GitHub Actions (OIDC)**, with no stored token, set up by the repository that first publishes, in an issue of its own.
 
 ## 5. Operation
 
@@ -164,7 +168,7 @@ The records ADR-001 to ADR-007 are **reconstructed**: the decisions were taken b
 - **Context:** repositories of the organisation will publish npm packages, the next one being `memorysmithapp/memorysmithapp-markdown` (*declared*).
 - **Decision:** every package published by a repository of the organisation uses the scope `@memorysmithapp`.
 - **Rationale:** the scope matches the GitHub organisation, so a package names where it lives.
-- **Consequences:** the root `package.json` of each repository is named under the scope, even when private.
+- **Consequences:** the root `package.json` of each repository is named under the scope, even when private. The scope was reserved on 2026-10-12, when the npm organisation `memorysmithapp` was created on the free plan; because that plan publishes public packages only, a published package declares public access and an unpublished one `"private": true` ([§4, npm](#4-integrations)).
 - **Date:** 2026-10-12. **Status:** Accepted. **Origin:** reconstructed; declared by the owner in #1.
 
 ### ADR-007 The repository is its own first instance
