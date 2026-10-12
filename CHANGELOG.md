@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-12
+
 ### Changed
 
 - `AGENTS.md` §8 keeps in `ARCHITECTURE.md` the description of every part the adoption keeps (the overview, the GitHub integration, the operation of `scripts/setup-repo.sh`), and says that the adopting session may verify a claim and mark it *observed* while facts of the organisation keep their status (#20).
@@ -54,6 +56,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/memorysmithapp/memorysmithapp-template/releases/tag/v0.1.0
