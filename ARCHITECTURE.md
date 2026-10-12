@@ -14,7 +14,7 @@ The repository carries no product code. It is made of:
 
 - **Documents**, the core of what it delivers: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` maps the reading and the writing onto `PRD.md`, `ARCHITECTURE.md`, `SDLC.md` and `README.md`, and states the limits and invariants in one line each; `CHANGELOG.md` records what each version changed.
 - **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
-- **A setup script**, `scripts/setup-repo.sh`, which applies to a repository the GitHub configuration a copy does not carry; a created repository keeps it.
+- **A setup script**, `scripts/setup-repo.sh`, which applies to a repository the GitHub configuration a copy does not carry, and puts it back when it drifts.
 - **A quality workflow**, `.github/workflows/quality.yml`, which runs `scripts/quality.mjs` on every pull request and push to `main`; the ruleset requires it.
 - **A release workflow**, `.github/workflows/release.yml`, which tags and publishes a version once its bump is merged.
 - **GitHub configuration**: the ruleset `main` and the settings the script applies.
@@ -35,7 +35,7 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `README.md` | What this is and how to start |
 | `CHANGELOG.md` | What changed in each version, in Keep a Changelog 1.1.0 |
 | `package.json` | The one home of the version (`version`), the package manager pinned (`packageManager`), and the scripts `quality` and `test`; private, named `@memorysmithapp/template`, with no dependency |
-| `scripts/setup-repo.sh` | Applies the settings a copy does not carry to a created repository (RN-REP-001, RN-REP-002); uses only `gh` and `jq`. Kept by the adoption, as the mechanism of INV-03 in every created repository |
+| `scripts/setup-repo.sh` | Applies the settings a copy does not carry to a created repository (RN-REP-001, RN-REP-002); uses only `gh` and `jq`; the mechanism of INV-03 |
 | `scripts/quality.mjs` | The checks of the workflow *Quality*, Node only (RN-REP-003) |
 | `scripts/quality.test.mjs` | The tests of the checks, one deliberate violation each, on `node:test` |
 | `scripts/release.mjs` | Decides what the workflow *Release* does on a push to `main`: release, nothing, or fail (RN-VER-003) |
@@ -73,7 +73,9 @@ The version lives in the `version` field of the root `package.json` and nowhere 
 - `pull_request`: every change through a pull request, with 0 required approvals, merge, squash and rebase allowed;
 - `required_status_checks`: the check `Quality` passes before a merge.
 
-Nobody can bypass it, administrators included (`current_user_can_bypass: never`, *observed*). A ruleset is a setting of the repository, not a file, so a created repository does not receive it: **`scripts/setup-repo.sh`** creates it there, or brings it back to this definition when it drifted (RN-REP-001). The adoption keeps the script, so every created repository holds the definition of its ruleset and the means to put it back (#17). The script defines the ruleset in its own source and compares, rule by rule, only the parameters it sets, so a parameter GitHub fills in by default does not count as drift. Run against a throwaway repository, the ruleset it created was identical to this repository's, identifiers and timestamps aside, and a second run changed nothing (*observed*, #7).
+Nobody can bypass it, administrators included (`current_user_can_bypass: never`, *observed*). A ruleset is a setting of the repository, not a file, so a created repository does not receive it: **`scripts/setup-repo.sh`** creates it there, or brings it back to this definition when it drifted (RN-REP-001). The script defines the ruleset in its own source and compares, rule by rule, only the parameters it sets, so a parameter GitHub fills in by default does not count as drift. Run against a throwaway repository, the ruleset it created was identical to this repository's, identifiers and timestamps aside, and a second run changed nothing (*observed*, #7).
+
+The adoption keeps the script, so every created repository holds the definition of its ruleset and the means to put it back (#17).
 
 ### INV-04 Only the release workflow writes a tag
 
