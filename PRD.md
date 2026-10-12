@@ -98,7 +98,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 
 | Code | Requirement | Threshold | Status |
 |---|---|---|---|
-| QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1,111 words *observed* at #2 |
+| QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1256 words *observed* at the cut of v0.1.0 |
 | QR-002 | A person who never saw the repository can create one from it with the `README.md` alone | No step outside the README | declared |
 | QR-003 | The checks need nothing beyond Node; the setup script nothing beyond `gh` and `jq` | No dependency in `package.json` | declared; *observed* |
 

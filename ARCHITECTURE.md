@@ -93,7 +93,7 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 
 **GitHub.**
 
-- *Template repositories:* a repository is created from this one with *Use this template* or `gh repo create --template`, receiving a copy of the files of the default branch in one initial commit, with no link back and no settings ([ADR-004](#adr-004-a-github-template-repository-copied-once)). This repository is not marked as a template yet (*observed*); #10 tracks it.
+- *Template repositories:* a repository is created from this one with *Use this template* or `gh repo create --template`, receiving a copy of the files of the default branch in one initial commit, with no link back and no settings ([ADR-004](#adr-004-a-github-template-repository-copied-once)). What makes this repository offer them is GitHub's *Template repository* flag, which the owner sets with `gh repo edit --template` (*declared*).
 - *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
 - *Issues and milestones:* GitHub's blank issue and default labels; a milestone per version ([ADR-005](#adr-005-githubs-defaults-for-issues-pull-requests-and-labels)).
 
