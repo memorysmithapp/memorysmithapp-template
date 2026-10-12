@@ -2,7 +2,9 @@
 
 How a change travels in this repository, from a need to a release. It does not say what the product does or under which rule ([`PRD.md`](PRD.md)), nor how the repository is organised ([`ARCHITECTURE.md`](ARCHITECTURE.md)).
 
-*Kept on adoption.* A repository that ships something deployable extends [§10](#10-release) and [§11](#11-rollback) for what it ships, and changes nothing else here without an issue of its own.
+*Kept on adoption.*
+
+A repository that ships something deployable extends [§10](#10-release) and [§11](#11-rollback) for what it ships, and changes nothing else here without an issue of its own.
 
 ## Contents
 
@@ -176,6 +178,7 @@ Carried whole from the main repository. Collect the data from the git history an
 3. `CLAUDE.md` is exactly `@AGENTS.md`;
 4. every relative link and anchor of every Markdown file resolves;
 5. no document carries a version footer ("Last revised", "Internal development document" and the like);
+6. every GitHub link at the foot of `CHANGELOG.md` names the repository the check runs in;
 
 and `pnpm test`, the tests that make each check fail on a deliberate violation. Both run locally the same way ([`AGENTS.md` §6](AGENTS.md#6-verified-commands)).
 
@@ -204,9 +207,10 @@ The bump flow, in this order:
 3. The owner reviews and merges it. The bump never reaches `main` by a direct push.
 4. The merge is a push to `main`, which runs the workflow **Release** on the merged commit:
    1. it reads the `version` of the root `package.json`;
-   2. if the tag `vX.Y.Z` already exists **on this commit**, it does nothing; if it exists on **another** commit, it fails, because a version names one commit;
-   3. if `CHANGELOG.md` has no released section `[X.Y.Z]`, it does nothing: the push was not a release;
-   4. otherwise it writes the **annotated** tag `vX.Y.Z` on the merged commit and creates the GitHub Release `vX.Y.Z` with the notes of that section.
+   2. if the links at the foot of `CHANGELOG.md` do not name this repository, it does nothing: the changelog is still the copy of another repository's, as in a repository just created from `memorysmithapp-template`;
+   3. if the tag `vX.Y.Z` already exists **on this commit**, it does nothing; if it exists on **another** commit, it fails, because a version names one commit;
+   4. if `CHANGELOG.md` has no released section `[X.Y.Z]`, it does nothing: the push was not a release;
+   5. otherwise it writes the **annotated** tag `vX.Y.Z` on the merged commit and creates the GitHub Release `vX.Y.Z` with the notes of that section.
 
 Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, so running it again is safe.
 

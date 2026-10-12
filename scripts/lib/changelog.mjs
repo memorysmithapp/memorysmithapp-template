@@ -67,6 +67,29 @@ export function releasedSections(changelog) {
   return changelog.sections.filter((section) => section.title !== 'Unreleased');
 }
 
+// The GitHub repositories (`owner/name`, lowercase) the link definitions at the foot point at. A
+// copy of a repository keeps the links of the one it was copied from until somebody rewrites them.
+export function linkedRepositories(changelog) {
+  const repositories = new Set();
+  for (const { url } of changelog.links.values()) {
+    const match = url.match(/^https:\/\/github\.com\/([^/]+\/[^/#?]+)/i);
+    if (match) repositories.add(match[1].toLowerCase());
+  }
+  return repositories;
+}
+
+// Whether the foot links of the changelog name this repository, and only it.
+export function namesRepository(changelog, repository) {
+  const linked = linkedRepositories(changelog);
+  return linked.size > 0 && [...linked].every((r) => r === repository.toLowerCase());
+}
+
+// The `owner/name` of a GitHub remote URL (https or ssh), or null.
+export function repositoryFromRemote(url) {
+  const match = url?.trim().match(/github\.com[:/]([^/]+\/[^/]+?)(?:\.git)?\/?$/i);
+  return match ? match[1] : null;
+}
+
 // The notes of one released version: the body of its section, trimmed of blank lines.
 export function releaseNotes(changelog, version) {
   const section = changelog.sections.find((s) => s.title === version);

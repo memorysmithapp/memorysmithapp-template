@@ -10,8 +10,11 @@ import {
   CATEGORIES,
   compareVersions,
   isSemver,
+  linkedRepositories,
+  namesRepository,
   parseChangelog,
   releasedSections,
+  repositoryFromRemote,
 } from './lib/changelog.mjs';
 
 const IGNORED_DIRECTORIES = new Set(['.git', 'node_modules', 'dist', 'coverage']);
@@ -98,6 +101,15 @@ function currentBranch(root) {
     return execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
   } catch {
     return '';
+  }
+}
+
+function currentRepository(root) {
+  if (process.env.GITHUB_REPOSITORY) return process.env.GITHUB_REPOSITORY;
+  try {
+    return repositoryFromRemote(execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+  } catch {
+    return null;
   }
 }
 
@@ -223,13 +235,25 @@ export function checkFooters(root) {
   return problems;
 }
 
-export function runChecks(root, branch = currentBranch(root)) {
+// 6. The links at the foot of the changelog name this repository, which is what lets the release
+// workflow publish here: a copy that still links to the repository it came from releases nothing.
+export function checkChangelogRepository(root, repository) {
+  if (!existsSync(join(root, 'CHANGELOG.md'))) return ['CHANGELOG.md: missing at the root'];
+  if (!repository) return ['cannot tell which repository this is: set GITHUB_REPOSITORY or add an origin remote on GitHub'];
+  const changelog = parseChangelog(readText(root, 'CHANGELOG.md'));
+  if (namesRepository(changelog, repository)) return [];
+  const linked = [...linkedRepositories(changelog)].join(', ') || 'no GitHub repository';
+  return [`CHANGELOG.md: the links at the foot name ${linked}, not ${repository}; rewrite them for this repository (AGENTS.md §8 in a repository being adopted)`];
+}
+
+export function runChecks(root, branch = currentBranch(root), repository = currentRepository(root)) {
   return [
     { name: 'The version has one home and agrees with CHANGELOG.md', problems: checkVersion(root, branch) },
     { name: 'CHANGELOG.md keeps the Keep a Changelog format', problems: checkChangelog(root) },
     { name: 'CLAUDE.md is exactly @AGENTS.md', problems: checkClaude(root) },
     { name: 'Relative links and anchors resolve', problems: checkLinks(root) },
     { name: 'No document carries a version footer', problems: checkFooters(root) },
+    { name: 'CHANGELOG.md links to this repository', problems: checkChangelogRepository(root, repository) },
   ];
 }
 

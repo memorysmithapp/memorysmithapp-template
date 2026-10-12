@@ -22,11 +22,11 @@ A copy carries files, not settings. From the root of the new clone, with `gh` au
 scripts/setup-repo.sh memorysmithapp/<name> "<description>" <topic>[,<topic>...]
 ```
 
-It sets the description and the topics, allows merge, squash and rebase, turns the wiki and discussions off, and creates the ruleset `main` that protects the default branch: no deletion, no force push, every change through a pull request. It prints what it changed and what was already in place; running it again changes nothing. Run it before the adoption, which deletes it.
+It sets the description and the topics, allows merge, squash and rebase, turns the wiki and discussions off, and creates the ruleset `main` that protects the default branch: no deletion, no force push, every change through a pull request. It prints what it changed and what was already in place; running it again changes nothing. It stays in the new repository after the adoption: run it again whenever the ruleset or the settings drift, and it puts back only what differs.
 
 ## Adopt it in the first session
 
-Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Ask it to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), on the branch `release/v0.1.0`, rewriting the identity, emptying `PRD.md` and `ARCHITECTURE.md` down to their skeletons, resetting the version and the changelog, and keeping `SDLC.md` and the rules.
+Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Until the adoption, the check `Quality` fails on the new repository, saying that `CHANGELOG.md` still links to `memorysmithapp-template`; nothing is released there before it. Ask the session to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), opening an adoption issue and working on the branch `docs/adopt-template`. In one commit it rewrites the identity and the README, empties `PRD.md` and `ARCHITECTURE.md` down to their skeletons while keeping what the process relies on, resets the version and the changelog, and keeps `SDLC.md` and the rules. Then it opens a pull request of its own: review and merge it before any other work, and `main` passes `Quality` from then on.
 
 ## Check the documents
 

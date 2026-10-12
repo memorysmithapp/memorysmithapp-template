@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-12
+
+### Added
+
+- A sixth check in `Quality`: the links at the foot of `CHANGELOG.md` name the repository the check runs in, so an adoption that forgets to rewrite them fails on its pull request (#14).
+
+### Changed
+
+- `AGENTS.md` §8 lists what the adoption keeps in `ARCHITECTURE.md` (the invariant subsections, the npm paragraph, the workflows), drops the RN citations and the *Kept*/*Rewritten* markers, and rewrites `README.md` whole, so following it to the letter leaves no kept text pointing at something it removed (#15).
+- The adoption follows `SDLC.md`: the session opens its issue in the milestone `v0.1.0`, works on `docs/adopt-template` in one commit, and opens a pull request of its own that the owner merges before any other work; it cuts no version (#16).
+- A created repository keeps `scripts/setup-repo.sh` after the adoption, as the mechanism of INV-03, to run again whenever its ruleset or settings drift (#17).
+
+### Fixed
+
+- A repository created from `memorysmithapp-template` no longer receives a `v0.1.0` tag and Release of the template on its initial commit: `Release` publishes only when the links at the foot of `CHANGELOG.md` name the repository it runs in (#14).
+- The annotated tag written by `Release` keeps the `###` category lines of its notes: `git tag` now takes the message verbatim instead of stripping lines that start with `#` (#13).
+
 ## [0.1.0] - 2026-10-12
 
 ### Added
@@ -28,5 +45,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/memorysmithapp/memorysmithapp-template/releases/tag/v0.1.0

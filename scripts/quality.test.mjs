@@ -9,6 +9,7 @@ import { afterEach, describe, test } from 'node:test';
 import { parseChangelog, releaseNotes } from './lib/changelog.mjs';
 import {
   checkChangelog,
+  checkChangelogRepository,
   checkClaude,
   checkFooters,
   checkLinks,
@@ -72,7 +73,7 @@ afterEach(() => {
 });
 
 test('a well-formed repository passes every check', () => {
-  for (const { name, problems } of runChecks(repository(), 'main')) assert.deepEqual(problems, [], name);
+  for (const { name, problems } of runChecks(repository(), 'main', 'o/r')) assert.deepEqual(problems, [], name);
 });
 
 describe('1. the version has one home and agrees with the changelog', () => {
@@ -188,6 +189,25 @@ describe('5. no document carries a version footer', () => {
 
   test('allows the words inside a sentence', () => {
     assert.deepEqual(checkFooters(repository({ 'docs/guide.md': 'No "last revised" footers here.\n' })), []);
+  });
+});
+
+describe('6. CHANGELOG.md links to this repository', () => {
+  test('passes when every foot link names the repository, whatever the case', () => {
+    assert.deepEqual(checkChangelogRepository(repository(), 'O/R'), []);
+  });
+
+  test('fails in a copy whose links still name the repository it came from', () => {
+    assert.match(checkChangelogRepository(repository(), 'memorysmithapp/created')[0], /name o\/r, not memorysmithapp\/created/);
+  });
+
+  test('fails when one link names another repository', () => {
+    const mixed = CHANGELOG.replace('[0.1.0]: https://github.com/o/r/', '[0.1.0]: https://github.com/o/elsewhere/');
+    assert.equal(checkChangelogRepository(repository({ 'CHANGELOG.md': mixed }), 'o/r').length, 1);
+  });
+
+  test('fails when it cannot tell which repository it runs in', () => {
+    assert.match(checkChangelogRepository(repository(), null)[0], /cannot tell which repository/);
   });
 });
 

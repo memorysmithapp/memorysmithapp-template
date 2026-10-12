@@ -51,7 +51,9 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 
 ## 4. Limits
 
-*Kept on adoption.* One line each; the reason lives where the link points.
+*Kept on adoption.*
+
+One line each; the reason lives where the link points.
 
 - `main` is protected: every change reaches it through a pull request. Never push to `main`; never use `--admin`, *Bypass rules*, `--no-verify` or an equivalent ([SDLC §1](SDLC.md#1-the-life-cycle-of-a-change)).
 - A blocked merge means **stop and report**, never work around it ([SDLC §7](SDLC.md#7-a-blocked-merge)).
@@ -64,17 +66,17 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 
 ## 5. Invariants
 
-*Kept on adoption*, with the mechanism of each rewritten in `ARCHITECTURE.md` when the project enforces it differently.
+*Kept on adoption.*
 
 - **INV-01** The version has exactly one home, the root `package.json`, and `CHANGELOG.md` agrees with it; RN-VER-001 ([mechanism](ARCHITECTURE.md#inv-01-the-version-has-one-home)).
 - **INV-02** `CLAUDE.md` is exactly `@AGENTS.md` and nothing else; RN-DOC-002 ([mechanism](ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
 - **INV-03** `main` changes only through a pull request; RN-REP-001 ([mechanism](ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
-- **INV-04** Only the release workflow writes a tag, and a version names one commit; RN-VER-003 ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
+- **INV-04** Only the release workflow writes a tag, and a version names one commit; RN-VER-003, RN-VER-004 ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
 - **INV-05** The documents keep their form: the changelog's format, links and anchors that resolve, no version footers; RN-REP-003 ([mechanism](ARCHITECTURE.md#inv-05-the-documents-keep-their-form)).
 
 ## 6. Verified commands
 
-*Kept on adoption*, re-verified in the new repository before it is listed there.
+*Kept on adoption.*
 
 Each command with the directory it runs in, what it does, and the date somebody last ran it and saw it work. A command nobody ran is never listed.
 
@@ -99,12 +101,26 @@ Each command with the directory it runs in, what it does, and the date somebody 
 
 *Kept in `memorysmithapp-template`; deleted from a repository once it is adopted.*
 
-A repository created from `memorysmithapp-template` holds a copy of these files and nothing else. Its first session, on the branch `release/v0.1.0`, adopts it in one commit:
+A repository created from `memorysmithapp-template` holds a copy of these files and nothing else. Its first session adopts it as one piece of work under `SDLC.md`, and the owner asking for the adoption is the go-ahead ([§4](#4-limits)):
 
-1. **Identity:** rewrite §1 of this file and the presentation of `README.md` for the new project; set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`.
-2. **`PRD.md` and `ARCHITECTURE.md`:** empty them down to their skeletons, keeping each heading and the one-line instruction under it; the ADR section keeps its format and starts empty.
-3. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry records the adoption, with its foot link pointing at the new repository's `commits/main`.
-4. **Kept:** `SDLC.md`, `CLAUDE.md`, §2–§7 of this file, `.github/workflows/`, `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests stay as they are; §6 keeps only the commands re-run in the new repository, with that date.
-5. **Deleted:** this section, and `scripts/setup-repo.sh`, which the owner runs once before the adoption ([`README.md`](README.md#apply-the-settings-a-copy-does-not-carry)).
+- it opens the issue *Adopt memorysmithapp-template* in the milestone `v0.1.0`, creating the milestone if it is missing;
+- it works on the branch `docs/adopt-template`, in one commit that references the issue, and closes the issue naming the commit ([SDLC §5](SDLC.md#5-when-an-issue-closes));
+- it opens a pull request of its own ([SDLC §6](SDLC.md#6-pull-request)), which the owner reviews and merges before any other work, so the new repository's `main` passes `Quality` from then on;
+- it cuts no version: the adoption is governance, and its entry waits in `[Unreleased]` for the project's first cut ([SDLC §9](SDLC.md#9-versioning)).
+
+The commit does what follows. Followed as written, the result passes `Quality`, and no kept text points at something the adoption removed.
+
+1. **Identity:** rewrite §1 of this file for the new project, and `README.md` whole: what the project is, how to start, the command of `scripts/setup-repo.sh` with the description and topics the owner used, and the documents it has. Set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`. Ask the owner what the repository does not say, such as its visibility.
+2. **Skeletons:** `PRD.md` and `ARCHITECTURE.md` keep their title, their opening sentence saying what the document answers (rewritten for the new repository), the paragraph on the status of claims, and each heading with the *Instruction* line under it. `PRD.md` §7 also keeps its rule on codes (append-only, never reused), without this repository's areas; its codes start again from `001`. `ARCHITECTURE.md` also keeps what the kept documents rely on:
+   - §2: the row of every file the adoption keeps, updated for the new repository (its package name; `AGENTS.md` without this section);
+   - §3: the subsections INV-01 to INV-05, headings unchanged since §5 of this file links to them; a mechanism is rewritten only where the new repository differs, such as the id of its ruleset;
+   - §4: the npm paragraph, a fact of the organisation that `SDLC.md` §10 points at;
+   - §5: what the workflows *Quality* and *Release* do;
+   - §6: its format paragraph, and no record.
+3. **The template's history:** remove from every kept text the citations of `memorysmithapp-template`'s RN codes, ADRs and issue numbers. They name its rules, records and issues: in the new repository an ADR link would not resolve, and `#N` would name an unrelated issue. The sentence stays; only the citation goes. A claim marked *observed* or *declared* about this repository becomes **To confirm** until it is verified in the new one.
+4. **Markers:** remove every paragraph that marks a section as kept or rewritten, or says what the adoption does to a document, the one at the top of this file included: in a repository that is not a template they describe nothing. Each such marker stands in a paragraph of its own. The *Instruction* lines stay until their sections are filled.
+5. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry, under `Changed`, records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
+6. **Kept:** `SDLC.md` (but for step 4), `CLAUDE.md`, `LICENSE`, `.gitignore`, `.editorconfig`, `pnpm-lock.yaml`, §2–§7 of this file, `.github/workflows/`, `scripts/setup-repo.sh` (the mechanism of INV-03, run again whenever the ruleset drifts), `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests. §6 keeps the commands run in the new repository, with that date; the owner's run of `scripts/setup-repo.sh` counts, with the date the owner gives.
+7. **Deleted:** this section.
 
 Then the owner fills `PRD.md` and `ARCHITECTURE.md` with the project, issue by issue.

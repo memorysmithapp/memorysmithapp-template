@@ -65,7 +65,7 @@ Every new repository of the `memorysmithapp` organisation starts empty and redis
 
 **Creating a repository from it.** The owner creates the repository with *Use this template* or `gh repo create memorysmithapp/<name> --template memorysmithapp/memorysmithapp-template --public --clone`, and receives these files in one initial commit.
 
-**Adopting it in the first session.** A Claude Code session opened at the root of the created repository loads `AGENTS.md` through `CLAUDE.md`, finds §8 *Adopting this repository*, and on the branch `release/v0.1.0` rewrites the identity, empties `PRD.md` and `ARCHITECTURE.md` to their skeletons, resets the version and the changelog, keeps `SDLC.md` and the rules, and deletes §8.
+**Adopting it in the first session.** A Claude Code session opened at the root of the created repository loads `AGENTS.md` through `CLAUDE.md`, finds §8 *Adopting this repository*, opens the adoption issue, and on the branch `docs/adopt-template` rewrites the identity, empties `PRD.md` and `ARCHITECTURE.md` to their skeletons, resets the version and the changelog, keeps `SDLC.md` and the rules, and deletes §8, in one commit; then it opens the adoption's own pull request, which the owner merges before the project's first cycle starts.
 
 **A later session working under it.** A session in any instance starts with `AGENTS.md` loaded, follows the reading map to the section it needs, works an issue on the branch of the cycle under `SDLC.md`, writes each paragraph where the writing map says, and runs the checklist of `AGENTS.md` §7 before calling the work done.
 
@@ -86,11 +86,12 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-DOC-007 | Everything in the repository is written in American English (en-US) | declared |
 | RN-VER-001 | The version lives in the `version` field of the root `package.json`, and nowhere else | declared |
 | RN-VER-002 | `CHANGELOG.md` follows Keep a Changelog 1.1.0: `[Unreleased]` on top, its categories only, compare links at the foot | declared |
-| RN-VER-003 | After a merge to `main`, the workflow `Release` writes the annotated tag `vX.Y.Z` of the version in `package.json` on the merged commit and the GitHub Release with the notes of its `CHANGELOG.md` section, when that section exists and the tag does not; it refuses a tag that already names another commit. Nobody tags by hand | declared; the decision *observed* in tests (#9); the first real run is the cut of v0.1.0 (**To confirm**) |
+| RN-VER-003 | After a merge to `main`, the workflow `Release` writes the annotated tag `vX.Y.Z` of the version in `package.json` on the merged commit and the GitHub Release with the notes of its `CHANGELOG.md` section, when that section exists and the tag does not; it refuses a tag that already names another commit. Nobody tags by hand | declared; *observed* at the release of v0.1.0 |
+| RN-VER-004 | `CHANGELOG.md`'s links at the foot name the repository it belongs to; `Release` publishes nothing in a repository they do not name, and `Quality` fails there. A repository created from this one releases nothing until its adoption rewrites them, and its first cut is the first thing published there | declared by the owner in #14; *observed* in tests (#14) |
 | RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, the status check `Quality` required, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
 | RN-REP-002 | `scripts/setup-repo.sh` is idempotent, reports what it changed and what was in place, and fails loudly on a missing argument, tool or permission | declared; *observed* on a throwaway repository (#7) |
 | RN-REP-003 | The workflow `Quality` runs on every pull request and push to `main` and fails when the version and `CHANGELOG.md` disagree, `CHANGELOG.md` leaves its format, `CLAUDE.md` is not exactly the import, a relative link or anchor does not resolve, or a document carries a version footer; a person runs the same checks with `pnpm run quality` | declared; each check *observed* failing on a deliberate violation (#8) |
-| RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes, `scripts/setup-repo.sh` included | declared |
+| RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes; it keeps `scripts/setup-repo.sh`, the mechanism of INV-03 there | declared; the script kept by the owner's decision in #17 |
 
 ## 8. Quality requirements
 
@@ -98,7 +99,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 
 | Code | Requirement | Threshold | Status |
 |---|---|---|---|
-| QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1,256 words *observed* at the cut of v0.1.0 |
+| QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1,688 words *observed* at the cut of v0.2.0 |
 | QR-002 | A person who never saw the repository can create one from it with the `README.md` alone | No step outside the README | declared |
 | QR-003 | The checks need nothing beyond Node; the setup script nothing beyond `gh` and `jq` | No dependency in `package.json` | declared; *observed* |
 
@@ -118,7 +119,8 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-VER-001 | `version` appears in the root `package.json` and in no document |
 | RN-VER-002 | `CHANGELOG.md` opens with `[Unreleased]`, uses only Keep a Changelog categories, and has a link definition for every section |
 | RN-VER-003 | The tag `vX.Y.Z` and its Release exist after the merge of the cut, written by `github-actions[bot]`, on the merged commit, with the notes of `[X.Y.Z]` |
+| RN-VER-004 | A repository just created from this one has no tag and no Release, and its `Quality` fails on the foot links until the adoption rewrites them |
 | RN-REP-001 | After a run, `gh api repos/<r>/rulesets/<id>` returns the same ruleset as this repository's, except identifiers and timestamps |
 | RN-REP-002 | A second run reports nothing changed; a run without its three arguments, without `gh` or `jq`, or without administrator rights exits non-zero with the reason |
 | RN-REP-003 | `pnpm test` passes, with a test per check failing on a deliberate violation; a pull request whose `Quality` fails cannot be merged |
-| RN-ADO-001 | Following `AGENTS.md` §8 in a created repository yields a coherent repository empty of this one's content, with the process intact |
+| RN-ADO-001 | Following `AGENTS.md` §8 to the letter in a created repository yields a repository empty of this one's content, with the process intact, where `Quality` passes and no kept text points at something the adoption removed |
