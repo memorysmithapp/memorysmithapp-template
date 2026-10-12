@@ -12,5 +12,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `CLAUDE.md`, the single line `@AGENTS.md`, so Claude Code loads the instructions in every session and sub-agent (#2).
 - `SDLC.md`, how a change travels from a need to a release: life cycle, issues and milestones, branches, commits, when an issue closes, the three sections of a pull request, a blocked merge, tests and review, versioning, release, rollback and done criteria (#3).
 - `PRD.md`, the product requirements of `memorysmithapp-template` itself: problem, audience, goals and scope, principles, ubiquitous language, journeys, the business rules `RN-DOC-001`–`007`, `RN-VER-001`–`002` and `RN-ADO-001`, quality requirements and acceptance criteria (#4).
+- `ARCHITECTURE.md`, the organisation of the repository: overview, layout, the mechanism of each invariant of `AGENTS.md`, integrations, operation, and the reconstructed records ADR-001 to ADR-007 of the decisions declared before the repository existed (#5).
 
 [unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/commits/main
