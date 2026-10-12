@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- A sixth check in `Quality`: the links at the foot of `CHANGELOG.md` name the repository the check runs in, so an adoption that forgets to rewrite them fails on its pull request (#14).
+
+### Fixed
+
+- A repository created from `memorysmithapp-template` no longer receives a `v0.1.0` tag and Release of the template on its initial commit: `Release` publishes only when the links at the foot of `CHANGELOG.md` name the repository it runs in (#14).
+
 ## [0.1.0] - 2026-10-12
 
 ### Added

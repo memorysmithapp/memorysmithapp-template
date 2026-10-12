@@ -79,7 +79,9 @@ Nobody can bypass it, administrators included (`current_user_can_bypass: never`,
 
 A version names one commit: the tag `vX.Y.Z` is written once, on the merged commit, and never moved or deleted ([`SDLC.md` §10](SDLC.md#10-release), [§11](SDLC.md#11-rollback)).
 
-**Mechanism:** the workflow *Release* ([`.github/workflows/release.yml`](.github/workflows/release.yml)), on every push to `main`. [`scripts/release.mjs`](scripts/release.mjs) reads the version, refuses to go on when its tag names another commit, and releases only when `CHANGELOG.md` has a section for it and the tag does not exist yet; the workflow then writes the annotated tag on `GITHUB_SHA` and the Release with that section as its notes (RN-VER-003). That nobody writes a tag by hand is held by the limit of `AGENTS.md` §4: the ruleset `main` protects the branch, not tags.
+**Mechanism:** the workflow *Release* ([`.github/workflows/release.yml`](.github/workflows/release.yml)), on every push to `main`. [`scripts/release.mjs`](scripts/release.mjs) reads the version, releases nothing when the GitHub links at the foot of `CHANGELOG.md` do not all name `GITHUB_REPOSITORY` (RN-VER-004), refuses to go on when its tag names another commit, and releases only when `CHANGELOG.md` has a section for it and the tag does not exist yet; the workflow then writes the annotated tag on `GITHUB_SHA` and the Release with that section as its notes (RN-VER-003). That nobody writes a tag by hand is held by the limit of `AGENTS.md` §4: the ruleset `main` protects the branch, not tags.
+
+The link condition exists because a repository created from this one receives its `CHANGELOG.md`, `[0.1.0]` section included, in an initial commit pushed to `main`: without it, *Release* published this repository's `v0.1.0` there on creation (*observed*, #14). Check 6 of [`scripts/quality.mjs`](scripts/quality.mjs) holds the other side: the foot links name the repository the check runs in, so an adoption that forgets to rewrite them fails `Quality` on its pull request instead of leaving *Release* to skip in silence. Until the adoption, a created repository's `Quality` therefore fails on that check, and says to rewrite the links.
 
 ### INV-05 The documents keep their form
 
@@ -111,7 +113,7 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 
 **Quality** (`.github/workflows/quality.yml`) runs on every pull request and every push to `main`, with `contents: read` and no secret; it reads the branch from `GITHUB_HEAD_REF` or `GITHUB_REF_NAME` for check 1.
 
-**Release** (`.github/workflows/release.yml`) runs on every push to `main`, one run at a time (`concurrency: release`), with `contents: write` for the workflow's own `GITHUB_TOKEN` and no stored secret: it pushes the tag with git, as `github-actions[bot]`, and creates the Release with `gh`. A tag pushed with that token starts no other workflow.
+**Release** (`.github/workflows/release.yml`) runs on every push to `main`, reads the repository it runs in from `GITHUB_REPOSITORY`, one run at a time (`concurrency: release`), with `contents: write` for the workflow's own `GITHUB_TOKEN` and no stored secret: it pushes the tag with git, as `github-actions[bot]`, and creates the Release with `gh`. A tag pushed with that token starts no other workflow.
 
 There is no deployable. `scripts/setup-repo.sh` runs on a person's machine, once per created repository, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
 

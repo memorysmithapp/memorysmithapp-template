@@ -69,7 +69,7 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 - **INV-01** The version has exactly one home, the root `package.json`, and `CHANGELOG.md` agrees with it; RN-VER-001 ([mechanism](ARCHITECTURE.md#inv-01-the-version-has-one-home)).
 - **INV-02** `CLAUDE.md` is exactly `@AGENTS.md` and nothing else; RN-DOC-002 ([mechanism](ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
 - **INV-03** `main` changes only through a pull request; RN-REP-001 ([mechanism](ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
-- **INV-04** Only the release workflow writes a tag, and a version names one commit; RN-VER-003 ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
+- **INV-04** Only the release workflow writes a tag, and a version names one commit; RN-VER-003, RN-VER-004 ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
 - **INV-05** The documents keep their form: the changelog's format, links and anchors that resolve, no version footers; RN-REP-003 ([mechanism](ARCHITECTURE.md#inv-05-the-documents-keep-their-form)).
 
 ## 6. Verified commands
@@ -103,7 +103,7 @@ A repository created from `memorysmithapp-template` holds a copy of these files 
 
 1. **Identity:** rewrite §1 of this file and the presentation of `README.md` for the new project; set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`.
 2. **`PRD.md` and `ARCHITECTURE.md`:** empty them down to their skeletons, keeping each heading and the one-line instruction under it; the ADR section keeps its format and starts empty.
-3. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry records the adoption, with its foot link pointing at the new repository's `commits/main`.
+3. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
 4. **Kept:** `SDLC.md`, `CLAUDE.md`, §2–§7 of this file, `.github/workflows/`, `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests stay as they are; §6 keeps only the commands re-run in the new repository, with that date.
 5. **Deleted:** this section, and `scripts/setup-repo.sh`, which the owner runs once before the adoption ([`README.md`](README.md#apply-the-settings-a-copy-does-not-carry)).
 

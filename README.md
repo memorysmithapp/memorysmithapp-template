@@ -26,7 +26,7 @@ It sets the description and the topics, allows merge, squash and rebase, turns t
 
 ## Adopt it in the first session
 
-Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Ask it to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), on the branch `release/v0.1.0`, rewriting the identity, emptying `PRD.md` and `ARCHITECTURE.md` down to their skeletons, resetting the version and the changelog, and keeping `SDLC.md` and the rules.
+Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Until the adoption, the check `Quality` fails on the new repository, saying that `CHANGELOG.md` still links to `memorysmithapp-template`; nothing is released there before it. Ask the session to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), on the branch `release/v0.1.0`, rewriting the identity, emptying `PRD.md` and `ARCHITECTURE.md` down to their skeletons, resetting the version and the changelog, and keeping `SDLC.md` and the rules.
 
 ## Check the documents
 
