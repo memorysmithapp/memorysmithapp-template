@@ -91,7 +91,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, the status check `Quality` required, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
 | RN-REP-002 | `scripts/setup-repo.sh` is idempotent, reports what it changed and what was in place, and fails loudly on a missing argument, tool or permission | declared; *observed* on a throwaway repository (#7) |
 | RN-REP-003 | The workflow `Quality` runs on every pull request and push to `main` and fails when the version and `CHANGELOG.md` disagree, `CHANGELOG.md` leaves its format, `CLAUDE.md` is not exactly the import, a relative link or anchor does not resolve, or a document carries a version footer; a person runs the same checks with `pnpm run quality` | declared; each check *observed* failing on a deliberate violation (#8) |
-| RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes, `scripts/setup-repo.sh` included | declared |
+| RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes; it keeps `scripts/setup-repo.sh`, the mechanism of INV-03 there | declared; the script kept by the owner's decision in #17 |
 
 ## 8. Quality requirements
 

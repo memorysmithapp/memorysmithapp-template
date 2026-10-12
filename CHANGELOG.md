@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `AGENTS.md` §8 lists what the adoption keeps in `ARCHITECTURE.md` (the invariant subsections, the npm paragraph, the workflows), drops the RN citations and the *Kept*/*Rewritten* markers, and rewrites `README.md` whole, so following it to the letter leaves no kept text pointing at something it removed (#15).
 - The adoption follows `SDLC.md`: the session opens its issue in the milestone `v0.1.0`, works on `docs/adopt-template` in one commit, and opens a pull request of its own that the owner merges before any other work; it cuts no version (#16).
+- A created repository keeps `scripts/setup-repo.sh` after the adoption, as the mechanism of INV-03, to run again whenever its ruleset or settings drift (#17).
 
 ### Fixed
 

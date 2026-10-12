@@ -22,7 +22,7 @@ A copy carries files, not settings. From the root of the new clone, with `gh` au
 scripts/setup-repo.sh memorysmithapp/<name> "<description>" <topic>[,<topic>...]
 ```
 
-It sets the description and the topics, allows merge, squash and rebase, turns the wiki and discussions off, and creates the ruleset `main` that protects the default branch: no deletion, no force push, every change through a pull request. It prints what it changed and what was already in place; running it again changes nothing. Run it before the adoption, which deletes it.
+It sets the description and the topics, allows merge, squash and rebase, turns the wiki and discussions off, and creates the ruleset `main` that protects the default branch: no deletion, no force push, every change through a pull request. It prints what it changed and what was already in place; running it again changes nothing. It stays in the new repository after the adoption: run it again whenever the ruleset or the settings drift, and it puts back only what differs.
 
 ## Adopt it in the first session
 
