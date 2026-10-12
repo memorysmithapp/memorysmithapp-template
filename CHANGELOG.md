@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-12
+
 ### Added
 
 - `AGENTS.md`, how an agent works in this repository: identity, reading and writing maps, limits, invariants, verified commands, the checklist before calling something done, and the adoption step of a repository created from this one (#2).
@@ -25,4 +27,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/commits/main
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/memorysmithapp/memorysmithapp-template/releases/tag/v0.1.0
