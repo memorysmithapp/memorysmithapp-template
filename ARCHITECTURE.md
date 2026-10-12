@@ -119,6 +119,8 @@ There is no deployable. `scripts/setup-repo.sh` runs on a person's machine, once
 
 ## 6. Architecture decision records
 
+*Instruction: the decisions behind the architecture, one record each, in the format below.*
+
 *Kept on adoption: the format below stays, and a created repository starts with no record.*
 
 Each record has an identifier, never reused; its context, decision, rationale and consequences; its date, status and **origin**. A decision that changes keeps its old record, marked *Superseded by ADR-NNN*, and a new record states the new decision.
