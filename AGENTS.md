@@ -66,8 +66,8 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 
 *Kept on adoption*, with the mechanism of each rewritten in `ARCHITECTURE.md` when the project enforces it differently.
 
-- **INV-01** The version has exactly one home, the root `package.json`, and `CHANGELOG.md` agrees with it ([mechanism](ARCHITECTURE.md#inv-01-the-version-has-one-home)).
-- **INV-02** `CLAUDE.md` is exactly `@AGENTS.md` and nothing else ([mechanism](ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
+- **INV-01** The version has exactly one home, the root `package.json`, and `CHANGELOG.md` agrees with it; RN-VER-001 ([mechanism](ARCHITECTURE.md#inv-01-the-version-has-one-home)).
+- **INV-02** `CLAUDE.md` is exactly `@AGENTS.md` and nothing else; RN-DOC-002 ([mechanism](ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
 - **INV-03** `main` changes only through a pull request ([mechanism](ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
 - **INV-04** Only the release workflow writes a tag, and a version names one commit ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
 
