@@ -21,6 +21,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+          # No dependency to cache, and pnpm is not on the PATH until Corepack is enabled.
+          package-manager-cache: false
       - name: Enable the pnpm pinned in package.json
         run: corepack enable
       - name: Check the documents and the version

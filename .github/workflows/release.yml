@@ -26,6 +26,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+          # No dependency to cache, and the release needs no package manager.
+          package-manager-cache: false
       - name: Decide
         id: plan
         run: node scripts/release.mjs "$RUNNER_TEMP/notes.md" >> "$GITHUB_OUTPUT"
