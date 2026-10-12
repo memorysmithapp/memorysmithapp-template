@@ -15,6 +15,7 @@ The repository carries no product code. It is made of:
 - **Documents**, the core of what it delivers: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` maps the reading and the writing onto `PRD.md`, `ARCHITECTURE.md`, `SDLC.md` and `README.md`, and states the limits and invariants in one line each; `CHANGELOG.md` records what each version changed.
 - **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
 - **A setup script**, `scripts/setup-repo.sh`, which applies to a created repository the GitHub configuration a copy does not carry; it is deleted by the adoption.
+- **A quality workflow**, `.github/workflows/quality.yml`, which runs `scripts/quality.mjs` on every pull request and push to `main`; the ruleset requires it.
 - **GitHub configuration**: the ruleset `main` and the settings the script applies.
 
 Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an invariant is stated in `AGENTS.md` and its mechanism here; a rule is stated in `PRD.md` and enforced where §3 says.
@@ -32,8 +33,12 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `SDLC.md` | How a change travels from an issue to a release |
 | `README.md` | What this is and how to start |
 | `CHANGELOG.md` | What changed in each version, in Keep a Changelog 1.1.0 |
-| `package.json` | The one home of the version (`version`), and the package manager pinned (`packageManager`); private, named `@memorysmithapp/template` |
+| `package.json` | The one home of the version (`version`), the package manager pinned (`packageManager`), and the scripts `quality` and `test`; private, named `@memorysmithapp/template`, with no dependency |
 | `scripts/setup-repo.sh` | Applies the settings a copy does not carry to a created repository (RN-REP-001, RN-REP-002); uses only `gh` and `jq`. Kept here, deleted by the adoption |
+| `scripts/quality.mjs` | The checks of the workflow *Quality*, Node only (RN-REP-003) |
+| `scripts/quality.test.mjs` | The tests of the checks, one deliberate violation each, on `node:test` |
+| `scripts/lib/changelog.mjs` | Reads `CHANGELOG.md`: its sections, categories, link definitions and the notes of a version |
+| `.github/workflows/quality.yml` | The workflow *Quality*, job `Quality` |
 | `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files |
 | `.editorconfig` | UTF-8, LF, two spaces, final newline |
 | `LICENSE` | The MIT licence |
@@ -46,13 +51,13 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 
 The version lives in the `version` field of the root `package.json` and nowhere else; `CHANGELOG.md` records the versions that were cut (RN-VER-001, RN-VER-002).
 
-**Mechanism:** none mechanical yet. The writing map of `AGENTS.md` and the owner's review hold it.
+**Mechanism:** check 1 of [`scripts/quality.mjs`](scripts/quality.mjs), run by the workflow *Quality*: the root `package.json` has a SemVer `version`, and it is the latest released section of `CHANGELOG.md`; on the branch `release/vX.Y.Z` it may be ahead of it, bumping to it; before the first cut it may be `0.1.0` with no released section. That the version is written in no other file is held by the writing map and the owner's review.
 
 ### INV-02 CLAUDE.md is only the import
 
 `CLAUDE.md` is the line `@AGENTS.md` and nothing else (RN-DOC-002). Claude Code expands an `@path` line into the contents of the file it names, so the instructions load in every session and sub-agent; a `CLAUDE.md` that only mentioned `AGENTS.md` in prose would leave reading it to the agent's judgement (*observed* in a fresh session, #2).
 
-**Mechanism:** none mechanical yet. The owner's review holds it.
+**Mechanism:** check 3 of [`scripts/quality.mjs`](scripts/quality.mjs), run by the workflow *Quality*: the file is byte for byte `@AGENTS.md` and an optional newline.
 
 ### INV-03 main changes only through a pull request
 
@@ -60,7 +65,8 @@ The version lives in the `version` field of the root `package.json` and nowhere 
 
 - `deletion`: the branch cannot be deleted;
 - `non_fast_forward`: no force push;
-- `pull_request`: every change through a pull request, with 0 required approvals, merge, squash and rebase allowed.
+- `pull_request`: every change through a pull request, with 0 required approvals, merge, squash and rebase allowed;
+- `required_status_checks`: the check `Quality` passes before a merge.
 
 Nobody can bypass it, administrators included (`current_user_can_bypass: never`, *observed*). A ruleset is a setting of the repository, not a file, so a created repository does not receive it: **`scripts/setup-repo.sh`** creates it there, or brings it back to this definition when it drifted (RN-REP-001). The script defines the ruleset in its own source and compares, rule by rule, only the parameters it sets, so a parameter GitHub fills in by default does not count as drift. Run against a throwaway repository, the ruleset it created was identical to this repository's, identifiers and timestamps aside, and a second run changed nothing (*observed*, #7).
 
@@ -69,6 +75,12 @@ Nobody can bypass it, administrators included (`current_user_can_bypass: never`,
 A version names one commit: the tag `vX.Y.Z` is written once, on the merged commit, and never moved or deleted ([`SDLC.md` §10](SDLC.md#10-release), [§11](SDLC.md#11-rollback)).
 
 **Mechanism:** none mechanical yet. The limit of `AGENTS.md` §4 holds it.
+
+### INV-05 The documents keep their form
+
+`CHANGELOG.md` keeps the format of Keep a Changelog 1.1.0, every relative link and anchor resolves, and no document carries a version footer (RN-VER-002, RN-DOC-005, RN-REP-003).
+
+**Mechanism:** checks 2, 4 and 5 of [`scripts/quality.mjs`](scripts/quality.mjs), run by the workflow *Quality*. Anchors are computed as GitHub computes them (lowercase, punctuation dropped, spaces as hyphens, `-1`, `-2`… for repeated headings), which is what keeps the links of `AGENTS.md` into this document from rotting silently. Code blocks and inline code are skipped, so a link or a footer quoted as code is not read as one. A footer is a line *starting* with "Last revised", "Last updated", "Revision date", "Internal document" and the like; the words inside a sentence are not one.
 
 ## 4. Integrations
 
@@ -80,13 +92,15 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 - *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
 - *Issues and milestones:* GitHub's blank issue and default labels; a milestone per version ([ADR-005](#adr-005-githubs-defaults-for-issues-pull-requests-and-labels)).
 
+- *Actions:* the workflow *Quality* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack.
+
 **npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). This repository publishes none.
 
 ## 5. Operation
 
 *Instruction: what runs, where, with which permissions and secrets.*
 
-No workflow runs, and there is no deployable and no secret. `scripts/setup-repo.sh` runs on a person's machine, once per created repository, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
+**Quality** (`.github/workflows/quality.yml`) runs on every pull request and every push to `main`, with `contents: read` and no secret; it reads the branch from `GITHUB_HEAD_REF` or `GITHUB_REF_NAME` for check 1. There is no deployable. `scripts/setup-repo.sh` runs on a person's machine, once per created repository, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
 
 ## 6. Architecture decision records
 

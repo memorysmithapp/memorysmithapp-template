@@ -86,8 +86,9 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-DOC-007 | Everything in the repository is written in American English (en-US) | declared |
 | RN-VER-001 | The version lives in the `version` field of the root `package.json`, and nowhere else | declared |
 | RN-VER-002 | `CHANGELOG.md` follows Keep a Changelog 1.1.0: `[Unreleased]` on top, its categories only, compare links at the foot | declared |
-| RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
+| RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, the status check `Quality` required, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
 | RN-REP-002 | `scripts/setup-repo.sh` is idempotent, reports what it changed and what was in place, and fails loudly on a missing argument, tool or permission | declared; *observed* on a throwaway repository (#7) |
+| RN-REP-003 | The workflow `Quality` runs on every pull request and push to `main` and fails when the version and `CHANGELOG.md` disagree, `CHANGELOG.md` leaves its format, `CLAUDE.md` is not exactly the import, a relative link or anchor does not resolve, or a document carries a version footer; a person runs the same checks with `pnpm run quality` | declared; each check *observed* failing on a deliberate violation (#8) |
 | RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes, `scripts/setup-repo.sh` included | declared |
 
 ## 8. Quality requirements
@@ -98,6 +99,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 |---|---|---|---|
 | QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1,111 words *observed* at #2 |
 | QR-002 | A person who never saw the repository can create one from it with the `README.md` alone | No step outside the README | declared |
+| QR-003 | The checks need nothing beyond Node; the setup script nothing beyond `gh` and `jq` | No dependency in `package.json` | declared; *observed* |
 
 ## 9. Acceptance criteria
 
@@ -116,4 +118,5 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-VER-002 | `CHANGELOG.md` opens with `[Unreleased]`, uses only Keep a Changelog categories, and has a link definition for every section |
 | RN-REP-001 | After a run, `gh api repos/<r>/rulesets/<id>` returns the same ruleset as this repository's, except identifiers and timestamps |
 | RN-REP-002 | A second run reports nothing changed; a run without its three arguments, without `gh` or `jq`, or without administrator rights exits non-zero with the reason |
+| RN-REP-003 | `pnpm test` passes, with a test per check failing on a deliberate violation; a pull request whose `Quality` fails cannot be merged |
 | RN-ADO-001 | Following `AGENTS.md` §8 in a created repository yields a coherent repository empty of this one's content, with the process intact |

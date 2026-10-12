@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `package.json` at the root, private, named `@memorysmithapp/template`, the one home of the version, with pnpm pinned (#6).
 - `.gitignore` and `.editorconfig` (#6).
 - `scripts/setup-repo.sh`, which applies to a created repository what a copy does not carry: description, topics, merge options, wiki and discussions off, and the ruleset `main`; idempotent, using only `gh` and `jq` (#7).
+- The workflow `Quality` and `pnpm run quality`: the version agrees with `CHANGELOG.md`, `CHANGELOG.md` keeps its format, `CLAUDE.md` is exactly the import, relative links and anchors resolve, and no document carries a version footer; with `pnpm test` making each check fail on a deliberate violation (#8).
+- `scripts/setup-repo.sh` requires the status check `Quality` in the ruleset `main` (#8).
 
 ### Changed
 

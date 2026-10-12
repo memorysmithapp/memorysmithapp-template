@@ -70,6 +70,7 @@ Each fact has one home. When a paragraph seems to fit two documents it goes into
 - **INV-02** `CLAUDE.md` is exactly `@AGENTS.md` and nothing else; RN-DOC-002 ([mechanism](ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
 - **INV-03** `main` changes only through a pull request; RN-REP-001 ([mechanism](ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
 - **INV-04** Only the release workflow writes a tag, and a version names one commit ([mechanism](ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
+- **INV-05** The documents keep their form: the changelog's format, links and anchors that resolve, no version footers; RN-REP-003 ([mechanism](ARCHITECTURE.md#inv-05-the-documents-keep-their-form)).
 
 ## 6. Verified commands
 
@@ -80,6 +81,8 @@ Each command with the directory it runs in, what it does, and the date somebody 
 | Command | Run in | What it does | Last verified |
 |---|---|---|---|
 | `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, and the ruleset `main`; idempotent | 2026-10-12, against a throwaway repository |
+| `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-10-12 |
+| `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-10-12 |
 
 ## 7. Before calling something done
 

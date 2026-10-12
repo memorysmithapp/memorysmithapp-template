@@ -8,5 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/memorysmithapp/memorysmithapp-template.git"
   },
+  "scripts": {
+    "quality": "node scripts/quality.mjs",
+    "test": "node --test \"scripts/**/*.test.mjs\""
+  },
   "packageManager": "pnpm@12.11.2"
 }

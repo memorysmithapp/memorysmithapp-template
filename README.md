@@ -28,6 +28,15 @@ It sets the description and the topics, allows merge, squash and rebase, turns t
 
 Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Ask it to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), on the branch `release/v0.1.0`, rewriting the identity, emptying `PRD.md` and `ARCHITECTURE.md` down to their skeletons, resetting the version and the changelog, and keeping `SDLC.md` and the rules.
 
+## Check the documents
+
+With Node 24 and Corepack (`corepack enable`), from the root:
+
+```sh
+pnpm run quality   # the checks the workflow Quality runs on every pull request
+pnpm test          # their tests
+```
+
 ## The documents
 
 | Document | Answers |

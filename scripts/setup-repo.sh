@@ -78,7 +78,8 @@ else
 fi
 
 # The ruleset `main` on the default branch: no deletion, no force push, changes only through a
-# pull request with 0 required approvals, merge, squash and rebase allowed, and no bypass actors.
+# pull request with 0 required approvals, merge, squash and rebase allowed, the status check
+# Quality (.github/workflows/quality.yml) required, and no bypass actors.
 desired_ruleset=$(cat <<'JSON'
 {
   "name": "main",
@@ -98,6 +99,14 @@ desired_ruleset=$(cat <<'JSON'
         "require_last_push_approval": false,
         "required_review_thread_resolution": false,
         "allowed_merge_methods": ["merge", "squash", "rebase"]
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": false,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [{"context": "Quality"}]
       }
     }
   ]

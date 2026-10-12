@@ -169,6 +169,16 @@ Carried whole from the main repository. Collect the data from the git history an
 
 **A green suite is necessary, not sufficient.** Before a change is called done it is exercised the way a person would use it: a document is read where it is rendered and its links followed, a script is run against a real target, a workflow is watched running. What was exercised is written in the PR's *Staging validation*.
 
+**What CI checks.** The workflow *Quality* runs on every pull request and every push to `main`, and the ruleset of `main` requires it. It runs `pnpm run quality`, which checks that:
+
+1. the root `package.json` has a SemVer `version`, and `CHANGELOG.md` has it as its latest released section, or the branch is `release/vX.Y.Z` bumping to it, or, before the first cut, it is `0.1.0`;
+2. `CHANGELOG.md` keeps the Keep a Changelog format: `[Unreleased]` on top, dated versions in descending order, its six categories only, a compare link at the foot for every section;
+3. `CLAUDE.md` is exactly `@AGENTS.md`;
+4. every relative link and anchor of every Markdown file resolves;
+5. no document carries a version footer ("Last revised", "Internal development document" and the like);
+
+and `pnpm test`, the tests that make each check fail on a deliberate violation. Both run locally the same way ([`AGENTS.md` §6](AGENTS.md#6-verified-commands)).
+
 **The owner reviews and merges** the pull request of a cycle; nobody merges their own cycle without that review.
 
 ## 9. Versioning
