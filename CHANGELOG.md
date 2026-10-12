@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 
 - A repository created from `memorysmithapp-template` no longer receives a `v0.1.0` tag and Release of the template on its initial commit: `Release` publishes only when the links at the foot of `CHANGELOG.md` name the repository it runs in (#14).
+- The annotated tag written by `Release` keeps the `###` category lines of its notes: `git tag` now takes the message verbatim instead of stripping lines that start with `#` (#13).
 
 ## [0.1.0] - 2026-10-12
 
