@@ -65,7 +65,7 @@ Every new repository of the `memorysmithapp` organisation starts empty and redis
 
 **Creating a repository from it.** The owner creates the repository with *Use this template* or `gh repo create memorysmithapp/<name> --template memorysmithapp/memorysmithapp-template --public --clone`, and receives these files in one initial commit.
 
-**Adopting it in the first session.** A Claude Code session opened at the root of the created repository loads `AGENTS.md` through `CLAUDE.md`, finds §8 *Adopting this repository*, and on the branch `release/v0.1.0` rewrites the identity, empties `PRD.md` and `ARCHITECTURE.md` to their skeletons, resets the version and the changelog, keeps `SDLC.md` and the rules, and deletes §8.
+**Adopting it in the first session.** A Claude Code session opened at the root of the created repository loads `AGENTS.md` through `CLAUDE.md`, finds §8 *Adopting this repository*, opens the adoption issue, and on the branch `docs/adopt-template` rewrites the identity, empties `PRD.md` and `ARCHITECTURE.md` to their skeletons, resets the version and the changelog, keeps `SDLC.md` and the rules, and deletes §8, in one commit; then it opens the adoption's own pull request, which the owner merges before the project's first cycle starts.
 
 **A later session working under it.** A session in any instance starts with `AGENTS.md` loaded, follows the reading map to the section it needs, works an issue on the branch of the cycle under `SDLC.md`, writes each paragraph where the writing map says, and runs the checklist of `AGENTS.md` §7 before calling the work done.
 

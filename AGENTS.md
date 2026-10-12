@@ -99,7 +99,14 @@ Each command with the directory it runs in, what it does, and the date somebody 
 
 *Kept in `memorysmithapp-template`; deleted from a repository once it is adopted.*
 
-A repository created from `memorysmithapp-template` holds a copy of these files and nothing else. Its first session, on the branch `release/v0.1.0`, adopts it in one commit. Followed as written, the result passes `Quality`, and no kept text points at something the adoption removed.
+A repository created from `memorysmithapp-template` holds a copy of these files and nothing else. Its first session adopts it as one piece of work under `SDLC.md`, and the owner asking for the adoption is the go-ahead ([§4](#4-limits)):
+
+- it opens the issue *Adopt memorysmithapp-template* in the milestone `v0.1.0`, creating the milestone if it is missing;
+- it works on the branch `docs/adopt-template`, in one commit that references the issue, and closes the issue naming the commit ([SDLC §5](SDLC.md#5-when-an-issue-closes));
+- it opens a pull request of its own ([SDLC §6](SDLC.md#6-pull-request)), which the owner reviews and merges before any other work, so the new repository's `main` passes `Quality` from then on;
+- it cuts no version: the adoption is governance, and its entry waits in `[Unreleased]` for the project's first cut ([SDLC §9](SDLC.md#9-versioning)).
+
+The commit does what follows. Followed as written, the result passes `Quality`, and no kept text points at something the adoption removed.
 
 1. **Identity:** rewrite §1 of this file for the new project, and `README.md` whole: what the project is, how to start, and the documents it has. Set `name` (under the `@memorysmithapp` scope), `description` and `repository` in `package.json`.
 2. **`PRD.md`:** empty it down to its skeleton: each heading and the *Instruction* line under it. Its rule codes start again from `001`.
