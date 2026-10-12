@@ -132,7 +132,7 @@ Nothing blocks the merge on this section: merging without a staging run is a dec
 
 ### 6.3 AI productivity analysis
 
-Carried whole from the main repository. Collect the data from the git history and the diff, without guessing and without omitting fields.
+The format of the main repository, with its scope indicators and its examples of technologies made independent of any one stack. Collect the data from the git history and the diff, without guessing and without omitting fields.
 
 ```
 ## AI productivity analysis
@@ -152,11 +152,11 @@ Carried whole from the main repository. Collect the data from the git history an
 
 - **Lines of code handled:** run `git diff --stat origin/main...HEAD` and add the insertions and deletions of the final totals line. Exclude lock files (`pnpm-lock.yaml`, `package-lock.json`) from the count.
 - **Branch duration:** use the date of the first commit on the branch as the start, and today as the PR date.
-- **Technologies involved:** list every language, framework, library and tool touched by the diff, for example TypeScript, Node.js, AWS CDK, DynamoDB, S3, Bedrock, React, Vite, Hono, Zod. Derive it from the extensions of the changed files and from the imports, and do not list technologies that exist in the repository but were not touched by this PR.
+- **Technologies involved:** list every language, runtime, framework, library, cloud service, CI system and tool touched by the diff. Derive it from the extensions of the changed files and from the imports, and do not list technologies that exist in the repository but were not touched by this PR.
 - **Estimated human effort:** produce a single realistic estimate of how long one engineer would take to deliver the same result alone, without AI assistance. Base the estimate on:
   - **Volume:** total lines handled (added + removed), weighted by complexity, distinguishing repetitive code from code with dense logic.
   - **Breadth:** the number of distinct technologies involved, since each additional one adds a learning curve and an integration cost.
-  - **Scope indicators:** the number of new aggregates, ports, adapters, API routes, MCP tools and CDK stacks, plus the test coverage added.
+  - **Scope indicators:** the number of units of design the change adds or reshapes — modules, interfaces, routes, tools, workflows, scripts, documents — counting what the repository actually has, plus the test coverage added.
   - Express the result in hours, for example `8h` or `2h`. If the scope is very small (less than 1h), use `< 1h`.
 - **Total estimated effort:** use the single hours value above. Then compute:
   - `{total_days}` = `{hours}` ÷ 8, rounded to one decimal place

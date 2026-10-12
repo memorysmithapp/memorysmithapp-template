@@ -99,7 +99,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 
 | Code | Requirement | Threshold | Status |
 |---|---|---|---|
-| QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1,688 words *observed* at the cut of v0.2.0 |
+| QR-001 | `AGENTS.md` is loaded whole in every session, so it stays short | Under about 2,000 words | declared; 1,764 words *observed* at the cut of v0.2.1 |
 | QR-002 | A person who never saw the repository can create one from it with the `README.md` alone | No step outside the README | declared |
 | QR-003 | The checks need nothing beyond Node; the setup script nothing beyond `gh` and `jq` | No dependency in `package.json` | declared; *observed* |
 
@@ -123,4 +123,4 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-REP-001 | After a run, `gh api repos/<r>/rulesets/<id>` returns the same ruleset as this repository's, except identifiers and timestamps |
 | RN-REP-002 | A second run reports nothing changed; a run without its three arguments, without `gh` or `jq`, or without administrator rights exits non-zero with the reason |
 | RN-REP-003 | `pnpm test` passes, with a test per check failing on a deliberate violation; a pull request whose `Quality` fails cannot be merged |
-| RN-ADO-001 | Following `AGENTS.md` §8 to the letter in a created repository yields a repository empty of this one's content, with the process intact, where `Quality` passes and no kept text points at something the adoption removed |
+| RN-ADO-001 | Following `AGENTS.md` §8 to the letter in a created repository yields a repository empty of this one's content, with the process intact, where `Quality` passes, no kept text points at something the adoption removed, and `ARCHITECTURE.md` describes every part it kept |

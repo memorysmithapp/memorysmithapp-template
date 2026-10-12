@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-12
+
+### Changed
+
+- `AGENTS.md` §8 keeps in `ARCHITECTURE.md` the description of every part the adoption keeps (the overview, the GitHub integration, the operation of `scripts/setup-repo.sh`), and says that the adopting session may verify a claim and mark it *observed* while facts of the organisation keep their status (#20).
+- The *AI productivity analysis* of `SDLC.md` §6.3 counts the units of design a change adds (modules, interfaces, routes, tools, workflows, scripts, documents) instead of the main repository's aggregates, adapters and CDK stacks, and its examples of technologies no longer name one stack; the table, the effort line and the arithmetic are unchanged (#21).
+
+### Fixed
+
+- After an adoption, no kept text points at the deleted `AGENTS.md` §8 or carries an adoption marker: the message of `Quality` check 6 no longer cites §8, and the row of `scripts/setup-repo.sh` in `ARCHITECTURE.md` §2 and the INV-03 mechanism keep the adoption note in a paragraph of its own (#19).
+
 ## [0.2.0] - 2026-10-12
 
 ### Added
@@ -45,6 +56,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/memorysmithapp/memorysmithapp-template/releases/tag/v0.1.0

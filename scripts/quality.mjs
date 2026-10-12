@@ -243,7 +243,7 @@ export function checkChangelogRepository(root, repository) {
   const changelog = parseChangelog(readText(root, 'CHANGELOG.md'));
   if (namesRepository(changelog, repository)) return [];
   const linked = [...linkedRepositories(changelog)].join(', ') || 'no GitHub repository';
-  return [`CHANGELOG.md: the links at the foot name ${linked}, not ${repository}; rewrite them for this repository (AGENTS.md §8 in a repository being adopted)`];
+  return [`CHANGELOG.md: the links at the foot name ${linked}, not ${repository}; rewrite them for this repository; a repository created from memorysmithapp-template rewrites them when it is adopted`];
 }
 
 export function runChecks(root, branch = currentBranch(root), repository = currentRepository(root)) {
