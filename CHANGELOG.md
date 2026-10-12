@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - `AGENTS.md` §8 keeps in `ARCHITECTURE.md` the description of every part the adoption keeps (the overview, the GitHub integration, the operation of `scripts/setup-repo.sh`), and says that the adopting session may verify a claim and mark it *observed* while facts of the organisation keep their status (#20).
+- The *AI productivity analysis* of `SDLC.md` §6.3 counts the units of design a change adds (modules, interfaces, routes, tools, workflows, scripts, documents) instead of the main repository's aggregates, adapters and CDK stacks, and its examples of technologies no longer name one stack; the table, the effort line and the arithmetic are unchanged (#21).
 
 ### Fixed
 
