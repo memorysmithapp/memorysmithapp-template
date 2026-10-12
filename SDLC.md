@@ -202,6 +202,13 @@ The bump flow, in this order:
 1. On the branch `release/vX.Y.Z`, in **one commit** `chore(release): cut vX.Y.Z`: set `version` in the root `package.json` to `X.Y.Z`; in `CHANGELOG.md`, rename `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD` with the date of the cut, open a fresh empty `[Unreleased]` above it, and update the compare links in the foot.
 2. Push the branch and open the single pull request of the cycle ([§6](#6-pull-request)).
 3. The owner reviews and merges it. The bump never reaches `main` by a direct push.
+4. The merge is a push to `main`, which runs the workflow **Release** on the merged commit:
+   1. it reads the `version` of the root `package.json`;
+   2. if the tag `vX.Y.Z` already exists **on this commit**, it does nothing; if it exists on **another** commit, it fails, because a version names one commit;
+   3. if `CHANGELOG.md` has no released section `[X.Y.Z]`, it does nothing: the push was not a release;
+   4. otherwise it writes the **annotated** tag `vX.Y.Z` on the merged commit and creates the GitHub Release `vX.Y.Z` with the notes of that section.
+
+Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, so running it again is safe.
 
 When a cycle is cut, every issue delivered in it is closed already ([§5](#5-when-an-issue-closes)), and the ones left behind move to the milestone of the next version: an accepted issue nobody reassessed is a silent promise.
 

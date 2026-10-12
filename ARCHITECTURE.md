@@ -16,6 +16,7 @@ The repository carries no product code. It is made of:
 - **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
 - **A setup script**, `scripts/setup-repo.sh`, which applies to a created repository the GitHub configuration a copy does not carry; it is deleted by the adoption.
 - **A quality workflow**, `.github/workflows/quality.yml`, which runs `scripts/quality.mjs` on every pull request and push to `main`; the ruleset requires it.
+- **A release workflow**, `.github/workflows/release.yml`, which tags and publishes a version once its bump is merged.
 - **GitHub configuration**: the ruleset `main` and the settings the script applies.
 
 Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an invariant is stated in `AGENTS.md` and its mechanism here; a rule is stated in `PRD.md` and enforced where §3 says.
@@ -37,8 +38,12 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `scripts/setup-repo.sh` | Applies the settings a copy does not carry to a created repository (RN-REP-001, RN-REP-002); uses only `gh` and `jq`. Kept here, deleted by the adoption |
 | `scripts/quality.mjs` | The checks of the workflow *Quality*, Node only (RN-REP-003) |
 | `scripts/quality.test.mjs` | The tests of the checks, one deliberate violation each, on `node:test` |
+| `scripts/release.mjs` | Decides what the workflow *Release* does on a push to `main`: release, nothing, or fail (RN-VER-003) |
+| `scripts/release.test.mjs` | The tests of that decision |
 | `scripts/lib/changelog.mjs` | Reads `CHANGELOG.md`: its sections, categories, link definitions and the notes of a version |
 | `.github/workflows/quality.yml` | The workflow *Quality*, job `Quality` |
+| `.github/workflows/release.yml` | The workflow *Release*, which writes the tag and the GitHub Release of a merged version |
+| `pnpm-lock.yaml` | Written by pnpm; with no dependency, it records only the pinned pnpm |
 | `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files |
 | `.editorconfig` | UTF-8, LF, two spaces, final newline |
 | `LICENSE` | The MIT licence |
@@ -74,7 +79,7 @@ Nobody can bypass it, administrators included (`current_user_can_bypass: never`,
 
 A version names one commit: the tag `vX.Y.Z` is written once, on the merged commit, and never moved or deleted ([`SDLC.md` §10](SDLC.md#10-release), [§11](SDLC.md#11-rollback)).
 
-**Mechanism:** none mechanical yet. The limit of `AGENTS.md` §4 holds it.
+**Mechanism:** the workflow *Release* ([`.github/workflows/release.yml`](.github/workflows/release.yml)), on every push to `main`. [`scripts/release.mjs`](scripts/release.mjs) reads the version, refuses to go on when its tag names another commit, and releases only when `CHANGELOG.md` has a section for it and the tag does not exist yet; the workflow then writes the annotated tag on `GITHUB_SHA` and the Release with that section as its notes (RN-VER-003). That nobody writes a tag by hand is held by the limit of `AGENTS.md` §4: the ruleset `main` protects the branch, not tags.
 
 ### INV-05 The documents keep their form
 
@@ -92,7 +97,7 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 - *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
 - *Issues and milestones:* GitHub's blank issue and default labels; a milestone per version ([ADR-005](#adr-005-githubs-defaults-for-issues-pull-requests-and-labels)).
 
-- *Actions:* the workflow *Quality* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack.
+- *Actions:* the workflows *Quality* and *Release* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack.
 
 **npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). This repository publishes none.
 
@@ -100,7 +105,11 @@ A version names one commit: the tag `vX.Y.Z` is written once, on the merged comm
 
 *Instruction: what runs, where, with which permissions and secrets.*
 
-**Quality** (`.github/workflows/quality.yml`) runs on every pull request and every push to `main`, with `contents: read` and no secret; it reads the branch from `GITHUB_HEAD_REF` or `GITHUB_REF_NAME` for check 1. There is no deployable. `scripts/setup-repo.sh` runs on a person's machine, once per created repository, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
+**Quality** (`.github/workflows/quality.yml`) runs on every pull request and every push to `main`, with `contents: read` and no secret; it reads the branch from `GITHUB_HEAD_REF` or `GITHUB_REF_NAME` for check 1.
+
+**Release** (`.github/workflows/release.yml`) runs on every push to `main`, one run at a time (`concurrency: release`), with `contents: write` for the workflow's own `GITHUB_TOKEN` and no stored secret: it pushes the tag with git, as `github-actions[bot]`, and creates the Release with `gh`. A tag pushed with that token starts no other workflow.
+
+There is no deployable. `scripts/setup-repo.sh` runs on a person's machine, once per created repository, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
 
 ## 6. Architecture decision records
 

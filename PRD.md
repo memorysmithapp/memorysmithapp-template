@@ -86,6 +86,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-DOC-007 | Everything in the repository is written in American English (en-US) | declared |
 | RN-VER-001 | The version lives in the `version` field of the root `package.json`, and nowhere else | declared |
 | RN-VER-002 | `CHANGELOG.md` follows Keep a Changelog 1.1.0: `[Unreleased]` on top, its categories only, compare links at the foot | declared |
+| RN-VER-003 | After a merge to `main`, the workflow `Release` writes the annotated tag `vX.Y.Z` of the version in `package.json` on the merged commit and the GitHub Release with the notes of its `CHANGELOG.md` section, when that section exists and the tag does not; it refuses a tag that already names another commit. Nobody tags by hand | declared; the decision *observed* in tests (#9); the first real run is the cut of v0.1.0 (**To confirm**) |
 | RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, the status check `Quality` required, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
 | RN-REP-002 | `scripts/setup-repo.sh` is idempotent, reports what it changed and what was in place, and fails loudly on a missing argument, tool or permission | declared; *observed* on a throwaway repository (#7) |
 | RN-REP-003 | The workflow `Quality` runs on every pull request and push to `main` and fails when the version and `CHANGELOG.md` disagree, `CHANGELOG.md` leaves its format, `CLAUDE.md` is not exactly the import, a relative link or anchor does not resolve, or a document carries a version footer; a person runs the same checks with `pnpm run quality` | declared; each check *observed* failing on a deliberate violation (#8) |
@@ -116,6 +117,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-DOC-007 | The repository's text, commits, branches, issues and PRs are in en-US |
 | RN-VER-001 | `version` appears in the root `package.json` and in no document |
 | RN-VER-002 | `CHANGELOG.md` opens with `[Unreleased]`, uses only Keep a Changelog categories, and has a link definition for every section |
+| RN-VER-003 | The tag `vX.Y.Z` and its Release exist after the merge of the cut, written by `github-actions[bot]`, on the merged commit, with the notes of `[X.Y.Z]` |
 | RN-REP-001 | After a run, `gh api repos/<r>/rulesets/<id>` returns the same ruleset as this repository's, except identifiers and timestamps |
 | RN-REP-002 | A second run reports nothing changed; a run without its three arguments, without `gh` or `jq`, or without administrator rights exits non-zero with the reason |
 | RN-REP-003 | `pnpm test` passes, with a test per check failing on a deliberate violation; a pull request whose `Quality` fails cannot be merged |
