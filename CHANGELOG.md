@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `AGENTS.md` §8 keeps in `ARCHITECTURE.md` the description of every part the adoption keeps (the overview, the GitHub integration, the operation of `scripts/setup-repo.sh`), and says that the adopting session may verify a claim and mark it *observed* while facts of the organisation keep their status (#20).
+
 ### Fixed
 
 - After an adoption, no kept text points at the deleted `AGENTS.md` §8 or carries an adoption marker: the message of `Quality` check 6 no longer cites §8, and the row of `scripts/setup-repo.sh` in `ARCHITECTURE.md` §2 and the INV-03 mechanism keep the adoption note in a paragraph of its own (#19).
