@@ -10,5 +10,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `AGENTS.md`, how an agent works in this repository: identity, reading and writing maps, limits, invariants, verified commands, the checklist before calling something done, and the adoption step of a repository created from this one (#2).
 - `CLAUDE.md`, the single line `@AGENTS.md`, so Claude Code loads the instructions in every session and sub-agent (#2).
+- `SDLC.md`, how a change travels from a need to a release: life cycle, issues and milestones, branches, commits, when an issue closes, the three sections of a pull request, a blocked merge, tests and review, versioning, release, rollback and done criteria (#3).
 
 [unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/commits/main
