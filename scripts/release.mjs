@@ -5,8 +5,9 @@
 //   2. if the links at the foot of CHANGELOG.md do not name this repository, nothing is released:
 //      the changelog is a copy of another repository's, as in a repository just created from
 //      memorysmithapp-template and not adopted yet;
-//   3. if the tag vX.Y.Z exists on this commit, nothing is tagged; if on another commit, fail,
-//      because a version names one commit;
+//   3. if the tag vX.Y.Z exists on this commit, nothing is tagged; if on an ancestor of this commit,
+//      nothing is released, because the version was released earlier and this push is not a release;
+//      if on any other commit, fail, because a version names one commit;
 //   4. if CHANGELOG.md has no released section for the version, nothing is released;
 //   5. otherwise release: write the notes of that section, for the annotated tag and the Release.
 //
@@ -19,7 +20,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isSemver, linkedRepositories, namesRepository, parseChangelog, releaseNotes, repositoryFromRemote } from './lib/changelog.mjs';
 
-export function plan({ version, changelog, repository, tagCommit, headCommit }) {
+export function plan({ version, changelog, repository, tagCommit, tagIsAncestor, headCommit }) {
   if (!isSemver(version)) return { action: 'fail', reason: `package.json: "version" is not a SemVer version (${JSON.stringify(version)})` };
   const tag = `v${version}`;
   const parsed = parseChangelog(changelog);
@@ -29,6 +30,7 @@ export function plan({ version, changelog, repository, tagCommit, headCommit }) 
   }
   if (tagCommit) {
     if (tagCommit === headCommit) return { action: 'tagged', tag, reason: `${tag} already names this commit` };
+    if (tagIsAncestor) return { action: 'skip', tag, reason: `${tag} names ${tagCommit}, an ancestor of ${headCommit}: this push is not a release` };
     return { action: 'fail', tag, reason: `${tag} already names ${tagCommit}, not ${headCommit}: a version names one commit` };
   }
   const notes = releaseNotes(parsed, version);
@@ -56,11 +58,14 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     console.error('cannot tell which repository this is: set GITHUB_REPOSITORY or add an origin remote on GitHub');
     process.exit(1);
   }
+  const tagCommit = git('rev-parse', '--quiet', '--verify', `refs/tags/v${version}^{commit}`);
   const result = plan({
     version,
     changelog: readFileSync('CHANGELOG.md', 'utf8'),
     repository,
-    tagCommit: git('rev-parse', '--quiet', '--verify', `refs/tags/v${version}^{commit}`),
+    tagCommit,
+    // merge-base --is-ancestor prints nothing and exits 0 when it is one; git() returns null on any other exit.
+    tagIsAncestor: tagCommit !== null && git('merge-base', '--is-ancestor', tagCommit, 'HEAD') !== null,
     headCommit: git('rev-parse', 'HEAD'),
   });
   console.error(result.reason);

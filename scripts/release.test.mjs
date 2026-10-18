@@ -32,10 +32,16 @@ test('does nothing when the tag already names this commit', () => {
   assert.equal(plan({ version: '0.1.0', changelog: CHANGELOG, repository: REPO, tagCommit: HEAD, headCommit: HEAD }).action, 'tagged');
 });
 
-test('fails when the tag names another commit', () => {
-  const result = plan({ version: '0.1.0', changelog: CHANGELOG, repository: REPO, tagCommit: 'b'.repeat(40), headCommit: HEAD });
+test('fails when the tag names a commit that is not an ancestor of this one', () => {
+  const result = plan({ version: '0.1.0', changelog: CHANGELOG, repository: REPO, tagCommit: 'b'.repeat(40), tagIsAncestor: false, headCommit: HEAD });
   assert.equal(result.action, 'fail');
   assert.match(result.reason, /a version names one commit/);
+});
+
+test('does nothing when the tag names an ancestor: a later push without a bump is not a release', () => {
+  const result = plan({ version: '0.1.0', changelog: CHANGELOG, repository: REPO, tagCommit: 'b'.repeat(40), tagIsAncestor: true, headCommit: HEAD });
+  assert.equal(result.action, 'skip');
+  assert.match(result.reason, /an ancestor of .*: this push is not a release/);
 });
 
 test('does nothing when the version has no released section', () => {
