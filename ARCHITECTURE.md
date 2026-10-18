@@ -99,7 +99,7 @@ The link condition exists because a repository created from this one receives it
 
 - *Template repositories:* a repository is created from this one with *Use this template* or `gh repo create --template`, receiving a copy of the files of the default branch in one initial commit, with no link back and no settings ([ADR-004](#adr-004-a-github-template-repository-copied-once)). What makes this repository offer them is GitHub's *Template repository* flag, which the owner sets with `gh repo edit --template` (*declared*).
 - *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
-- *Issues and milestones:* GitHub's blank issue and default labels; a milestone per version ([ADR-005](#adr-005-githubs-defaults-for-issues-pull-requests-and-labels)).
+- *Issues and milestones:* GitHub's blank issue, its default labels and the product label families a repository declares in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones); a milestone per version ([ADR-008](#adr-008-githubs-default-labels-are-a-floor)).
 - *Actions:* the workflows *Quality* and *Release* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack.
 
 **npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). The npm organisation `memorysmithapp` exists since 2026-10-12, which reserves the scope, and is on the **free plan, which publishes public packages only**; a private package would need the paid Teams plan (*declared* by the owner in #1). No npm token exists (*declared*). Therefore, in the `package.json` of every repository of the organisation:
@@ -166,7 +166,7 @@ The records ADR-001 to ADR-007 are **reconstructed**: the decisions were taken b
 - **Decision:** GitHub's blank issue, no issue or pull request templates, GitHub's default labels. The format of a PR description lives as text in [`SDLC.md` §6](SDLC.md#6-pull-request).
 - **Rationale:** nothing to maintain or to copy, and the format of a PR is read where the process is.
 - **Consequences:** the PR format is followed by reading, not by a form.
-- **Date:** 2026-10-12. **Status:** Accepted. **Origin:** reconstructed; declared by the owner in #1.
+- **Date:** 2026-10-12. **Status:** Superseded by [ADR-008](#adr-008-githubs-default-labels-are-a-floor). **Origin:** reconstructed; declared by the owner in #1.
 
 ### ADR-006 The npm scope @memorysmithapp
 
@@ -183,3 +183,11 @@ The records ADR-001 to ADR-007 are **reconstructed**: the decisions were taken b
 - **Rationale:** a structure that cannot describe a small repository will not describe a large one, and this repository is small and new enough that nothing breaks if a part is wrong.
 - **Consequences:** a created repository has an adoption step ([`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), RN-ADO-001) that empties the content and keeps the process.
 - **Date:** 2026-10-12. **Status:** Accepted. **Origin:** reconstructed; declared by the owner in #1.
+
+### ADR-008 GitHub's default labels are a floor
+
+- **Context:** ADR-005 allowed GitHub's default labels and nothing else. A product repository needs to say which business domain an issue affects and which part of the product it touches, and `memorysmithapp/memorysmithapp` is the first to need it, with its `domain:` and `layer:` labels (*declared*). A created repository starts with no record of this section, so a rule written only in an ADR never reaches it.
+- **Decision:** GitHub's blank issue, and no issue or pull request templates, as in ADR-005. GitHub's default labels are the base and are never removed; a repository may add product label families on top of them, declared in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones).
+- **Rationale:** the defaults cost nothing to keep, and a product needs to classify its issues by its own parts. How labels are used is process, and `SDLC.md` is kept on adoption, so the rule reaches every created repository.
+- **Consequences:** what a repository adds is written in `SDLC.md`, not in an ADR. No script creates labels: each family carries in `SDLC.md` the `gh label create` commands that create it.
+- **Date:** 2026-10-17. **Status:** Accepted. **Origin:** #23.

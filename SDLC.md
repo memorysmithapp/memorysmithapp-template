@@ -40,7 +40,13 @@ No stage is skipped out of haste, with one named exception: a **defect that bloc
 
 ## 2. Issues and milestones
 
-**Issues use GitHub's blank default.** There are no issue templates, no pull request template, and the labels are the ones GitHub ships (`bug`, `documentation`, `enhancement`, `question`, …). No label is created for what a native one already says, nor for a state: being accepted for a version is the **milestone**, and having been delivered or refused is the way the issue was **closed**.
+**Issues use GitHub's blank default.** There are no issue templates and no pull request template; the format of a pull request is the text of [§6](#6-pull-request).
+
+**GitHub's default labels are the base, and are never removed** (`bug`, `documentation`, `enhancement`, `question`, …). No label is created for what a default one already says, nor for a state: being accepted for a version is the **milestone**, and having been delivered or refused is the way the issue was **closed**.
+
+**A repository may add product label families on top of them**, to say which part of its product an issue touches. A family answers one question and has one prefix, such as `domain:` for the business domain an issue affects or `layer:` for the part of the product it touches (web, backend, infra). Each family is declared here: the question it answers and when it is applied, then each value with its description and color, and the `gh label create` command that creates it on GitHub. No script creates labels, so this list and its commands are what keep GitHub and the document in agreement.
+
+This repository declares no product labels.
 
 **An issue before implementing.** When the owner asks for an opinion, or says "open the issue", the answer is to register the issue and ask; implementation starts only on an explicit go-ahead.
 

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- A repository may add product label families, such as `domain:` and `layer:`, on top of GitHub's default labels, declared with their `gh label create` commands in `SDLC.md` §2; this repository declares none. ADR-008 supersedes ADR-005, keeping the blank issue and no issue or pull request templates (#23).
+
 ## [0.2.1] - 2026-10-12
 
 ### Changed

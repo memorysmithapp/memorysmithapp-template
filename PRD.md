@@ -32,7 +32,7 @@ Every new repository of the `memorysmithapp` organisation starts empty and redis
 
 - Sync anything to the repositories already created: each receives a copy once, and an improvement made here later does not reach them ([ADR-004](ARCHITECTURE.md#adr-004-a-github-template-repository-copied-once)).
 - Use an organisation `.github` repository to share `SECURITY.md`, `CONTRIBUTING.md` or the like.
-- Ship issue templates, a pull request template or custom labels.
+- Ship issue templates, a pull request template or product labels; a created repository may declare its own label families in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones).
 - Contain product code.
 
 ## 4. Principles
@@ -88,7 +88,7 @@ Codes are append-only: never renumbered, never reused. A rule that stops holding
 | RN-VER-002 | `CHANGELOG.md` follows Keep a Changelog 1.1.0: `[Unreleased]` on top, its categories only, compare links at the foot | declared |
 | RN-VER-003 | After a merge to `main`, the workflow `Release` writes the annotated tag `vX.Y.Z` of the version in `package.json` on the merged commit and the GitHub Release with the notes of its `CHANGELOG.md` section, when that section exists and the tag does not; it refuses a tag that already names another commit. Nobody tags by hand | declared; *observed* at the release of v0.1.0 |
 | RN-VER-004 | `CHANGELOG.md`'s links at the foot name the repository it belongs to; `Release` publishes nothing in a repository they do not name, and `Quality` fails there. A repository created from this one releases nothing until its adoption rewrites them, and its first cut is the first thing published there | declared by the owner in #14; *observed* in tests (#14) |
-| RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, the status check `Quality` required, no bypass actors); labels stay GitHub's defaults | declared; the ruleset it creates *observed* identical to this repository's (#7) |
+| RN-REP-001 | `scripts/setup-repo.sh` applies to a created repository what a copy does not carry: the description and topics, merge, squash and rebase allowed, wiki and discussions off, and the ruleset `main` on the default branch (no deletion, no force push, changes only through a pull request with 0 required approvals, the status check `Quality` required, no bypass actors); labels are not touched | declared; the ruleset it creates *observed* identical to this repository's (#7) |
 | RN-REP-002 | `scripts/setup-repo.sh` is idempotent, reports what it changed and what was in place, and fails loudly on a missing argument, tool or permission | declared; *observed* on a throwaway repository (#7) |
 | RN-REP-003 | The workflow `Quality` runs on every pull request and push to `main` and fails when the version and `CHANGELOG.md` disagree, `CHANGELOG.md` leaves its format, `CLAUDE.md` is not exactly the import, a relative link or anchor does not resolve, or a document carries a version footer; a person runs the same checks with `pnpm run quality` | declared; each check *observed* failing on a deliberate violation (#8) |
 | RN-ADO-001 | `AGENTS.md` §8 says what the first session of a created repository rewrites, empties, resets, keeps and deletes; it keeps `scripts/setup-repo.sh`, the mechanism of INV-03 there | declared; the script kept by the owner's decision in #17 |

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Applies to a repository created from memorysmithapp-template what a template does not copy:
 # the description and topics, the merge options, wiki and discussions off, and the ruleset `main`
-# protecting the default branch. Issue labels are left as GitHub's defaults.
+# protecting the default branch. Issue labels are not touched.
 #
 # Run once, right after creating the repository, with gh authenticated as an administrator of it.
 # Idempotent: a second run changes nothing and says so.
