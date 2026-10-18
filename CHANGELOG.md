@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - A repository may add product label families, such as `domain:` and `layer:`, on top of GitHub's default labels, declared with their `gh label create` commands in `SDLC.md` §2; this repository declares none. ADR-008 supersedes ADR-005, keeping the blank issue and no issue or pull request templates (#23).
+- The root holds only what a tool or a convention looks for there: `PRD.md`, `ARCHITECTURE.md` and `SDLC.md` move to `docs/`, and `CLAUDE.md` to `.claude/CLAUDE.md` as the line `@../AGENTS.md`, since an import resolves from the file that holds it. `Quality` check 3 requires that line and fails on a `CLAUDE.md` at the root, and the checks skip the worktrees under `.claude/worktrees/`; `.gitignore` keeps out `.claude/settings.local.json` and `.claude/worktrees/`. ADR-009 supersedes ADR-002, and RN-DOC-008 replaces the removed RN-DOC-002 (#24).
 
 ## [0.2.1] - 2026-10-12
 

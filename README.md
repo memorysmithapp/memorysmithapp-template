@@ -26,7 +26,7 @@ It sets the description and the topics, allows merge, squash and rebase, turns t
 
 ## Adopt it in the first session
 
-Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Until the adoption, the check `Quality` fails on the new repository, saying that `CHANGELOG.md` still links to `memorysmithapp-template`; nothing is released there before it. Ask the session to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), opening an adoption issue and working on the branch `docs/adopt-template`. In one commit it rewrites the identity and the README, empties `PRD.md` and `ARCHITECTURE.md` down to their skeletons while keeping what the process relies on, resets the version and the changelog, and keeps `SDLC.md` and the rules. Then it opens a pull request of its own: review and merge it before any other work, and `main` passes `Quality` from then on.
+Open a [Claude Code](https://claude.com/claude-code) session at the root of the new repository. `.claude/CLAUDE.md` imports `AGENTS.md`, so the session starts with the instructions loaded. Until the adoption, the check `Quality` fails on the new repository, saying that `CHANGELOG.md` still links to `memorysmithapp-template`; nothing is released there before it. Ask the session to adopt the repository: it follows [`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), opening an adoption issue and working on the branch `docs/adopt-template`. In one commit it rewrites the identity and the README, empties `PRD.md` and `ARCHITECTURE.md` down to their skeletons while keeping what the process relies on, resets the version and the changelog, and keeps `SDLC.md` and the rules. Then it opens a pull request of its own: review and merge it before any other work, and `main` passes `Quality` from then on.
 
 ## Check the documents
 
@@ -41,10 +41,10 @@ pnpm test          # their tests
 
 | Document | Answers |
 |---|---|
-| [`AGENTS.md`](AGENTS.md) (imported by [`CLAUDE.md`](CLAUDE.md)) | How an agent works here |
-| [`PRD.md`](PRD.md) | What the product solves and delivers, under which rule |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | How the repository is organised, and why |
-| [`SDLC.md`](SDLC.md) | How a change travels from an issue to a release |
+| [`AGENTS.md`](AGENTS.md) (imported by [`.claude/CLAUDE.md`](.claude/CLAUDE.md)) | How an agent works here |
+| [`docs/PRD.md`](docs/PRD.md) | What the product solves and delivers, under which rule |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the repository is organised, and why |
+| [`docs/SDLC.md`](docs/SDLC.md) | How a change travels from an issue to a release |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each version |
 
 The version lives in the `version` field of [`package.json`](package.json).

@@ -19,3 +19,7 @@ Thumbs.db
 .vscode/
 .obsidian/
 *.swp
+
+# Claude Code: personal settings and the worktrees it creates
+.claude/settings.local.json
+.claude/worktrees/
