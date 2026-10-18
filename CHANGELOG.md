@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-17
+
+### Changed
+
+- A repository may add product label families, such as `domain:` and `layer:`, on top of GitHub's default labels, declared with their `gh label create` commands in `SDLC.md` §2; this repository declares none. ADR-008 supersedes ADR-005, keeping the blank issue and no issue or pull request templates (#23).
+- The root holds only what a tool or a convention looks for there: `PRD.md`, `ARCHITECTURE.md` and `SDLC.md` move to `docs/`, and `CLAUDE.md` to `.claude/CLAUDE.md` as the line `@../AGENTS.md`, since an import resolves from the file that holds it. `Quality` check 3 requires that line and fails on a `CLAUDE.md` at the root, and the checks skip the worktrees under `.claude/worktrees/`; `.gitignore` keeps out `.claude/settings.local.json` and `.claude/worktrees/`. ADR-009 supersedes ADR-002, and RN-DOC-008 replaces the removed RN-DOC-002 (#24).
+
 ## [0.2.1] - 2026-10-12
 
 ### Changed
@@ -56,7 +63,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/memorysmithapp/memorysmithapp-template/releases/tag/v0.1.0

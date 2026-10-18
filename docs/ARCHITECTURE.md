@@ -1,6 +1,6 @@
 # Architecture
 
-How `memorysmithapp-template` is organised, and why. It describes this repository itself: what it is made of, what enforces each invariant of [`AGENTS.md` §5](AGENTS.md#5-invariants), what it integrates with, and the decisions behind it.
+How `memorysmithapp-template` is organised, and why. It describes this repository itself: what it is made of, what enforces each invariant of [`AGENTS.md` §5](../AGENTS.md#5-invariants), what it integrates with, and the decisions behind it.
 
 *Rewritten on adoption*, except [§6](#6-architecture-decision-records), whose format is kept and whose records start empty. A repository created from this one keeps every heading below with the one-line instruction in italics under it, and replaces the content with its own.
 
@@ -12,7 +12,7 @@ Claims carry their status when it is not obvious: *observed*, *declared*, *infer
 
 The repository carries no product code. It is made of:
 
-- **Documents**, the core of what it delivers: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` maps the reading and the writing onto `PRD.md`, `ARCHITECTURE.md`, `SDLC.md` and `README.md`, and states the limits and invariants in one line each; `CHANGELOG.md` records what each version changed.
+- **Documents**, the core of what it delivers: `.claude/CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` maps the reading and the writing onto `PRD.md`, `ARCHITECTURE.md` and `SDLC.md`, which live in `docs/`, and `README.md`, and states the limits and invariants in one line each; `CHANGELOG.md` records what each version changed. The root holds only what a tool or a convention looks for there ([ADR-009](#adr-009-the-root-holds-only-what-a-tool-looks-for-there)).
 - **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
 - **A setup script**, `scripts/setup-repo.sh`, which applies to a repository the GitHub configuration a copy does not carry, and puts it back when it drifts.
 - **A quality workflow**, `.github/workflows/quality.yml`, which runs `scripts/quality.mjs` on every pull request and push to `main`; the ruleset requires it.
@@ -27,13 +27,13 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 
 | Path | What it is for |
 |---|---|
-| `CLAUDE.md` | The single line `@AGENTS.md`, which Claude Code imports at the start of every session and sub-agent |
-| `AGENTS.md` | How an agent works here: identity, reading and writing maps, limits, invariants, verified commands, the checklist before done, adoption |
-| `PRD.md` | What the product solves and delivers, under which rule |
-| `ARCHITECTURE.md` | This document |
-| `SDLC.md` | How a change travels from an issue to a release |
-| `README.md` | What this is and how to start |
-| `CHANGELOG.md` | What changed in each version, in Keep a Changelog 1.1.0 |
+| `.claude/CLAUDE.md` | The single line `@../AGENTS.md`, which Claude Code imports at the start of every session and sub-agent |
+| `AGENTS.md` | How an agent works here: identity, reading and writing maps, limits, invariants, verified commands, the checklist before done, adoption; at the root, where the agents that read it look for it |
+| `docs/PRD.md` | What the product solves and delivers, under which rule |
+| `docs/ARCHITECTURE.md` | This document |
+| `docs/SDLC.md` | How a change travels from an issue to a release |
+| `README.md` | What this is and how to start; at the root, where GitHub renders it |
+| `CHANGELOG.md` | What changed in each version, in Keep a Changelog 1.1.0; at the root, by Keep a Changelog's convention and because the scripts read it there |
 | `package.json` | The one home of the version (`version`), the package manager pinned (`packageManager`), and the scripts `quality` and `test`; private, named `@memorysmithapp/template`, with no dependency |
 | `scripts/setup-repo.sh` | Applies the settings a copy does not carry to a created repository (RN-REP-001, RN-REP-002); uses only `gh` and `jq`; the mechanism of INV-03 |
 | `scripts/quality.mjs` | The checks of the workflow *Quality*, Node only (RN-REP-003) |
@@ -44,9 +44,9 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `.github/workflows/quality.yml` | The workflow *Quality*, job `Quality` |
 | `.github/workflows/release.yml` | The workflow *Release*, which writes the tag and the GitHub Release of a merged version |
 | `pnpm-lock.yaml` | Written by pnpm; with no dependency, it records only the pinned pnpm |
-| `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files |
+| `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files, and Claude Code's personal settings and worktrees under `.claude/` |
 | `.editorconfig` | UTF-8, LF, two spaces, final newline |
-| `LICENSE` | The MIT licence |
+| `LICENSE` | The MIT licence; at the root, the only place GitHub detects it |
 
 ## 3. Invariants and their mechanisms
 
@@ -56,13 +56,13 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 
 The version lives in the `version` field of the root `package.json` and nowhere else; `CHANGELOG.md` records the versions that were cut (RN-VER-001, RN-VER-002).
 
-**Mechanism:** check 1 of [`scripts/quality.mjs`](scripts/quality.mjs), run by the workflow *Quality*: the root `package.json` has a SemVer `version`, and it is the latest released section of `CHANGELOG.md`; on the branch `release/vX.Y.Z` it may be ahead of it, bumping to it; before the first cut it may be `0.1.0` with no released section. That the version is written in no other file is held by the writing map and the owner's review.
+**Mechanism:** check 1 of [`scripts/quality.mjs`](../scripts/quality.mjs), run by the workflow *Quality*: the root `package.json` has a SemVer `version`, and it is the latest released section of `CHANGELOG.md`; on the branch `release/vX.Y.Z` it may be ahead of it, bumping to it; before the first cut it may be `0.1.0` with no released section. That the version is written in no other file is held by the writing map and the owner's review.
 
 ### INV-02 CLAUDE.md is only the import
 
-`CLAUDE.md` is the line `@AGENTS.md` and nothing else (RN-DOC-002). Claude Code expands an `@path` line into the contents of the file it names, so the instructions load in every session and sub-agent; a `CLAUDE.md` that only mentioned `AGENTS.md` in prose would leave reading it to the agent's judgement (*observed* in a fresh session, #2).
+`.claude/CLAUDE.md` is the line `@../AGENTS.md` and nothing else, and no `CLAUDE.md` sits at the root (RN-DOC-008). Claude Code expands an `@path` line into the contents of the file it names, so the instructions load in every session and sub-agent; a `CLAUDE.md` that only mentioned `AGENTS.md` in prose would leave reading it to the agent's judgement (*observed* in a fresh session, #2). The path resolves from the file that holds the import: inside `.claude/`, `@AGENTS.md` imports nothing, and the session starts with the file listed as loaded and the instructions absent, with no warning (*observed* in fresh sessions, #24). A `CLAUDE.md` at the root would load as well, beside the one in `.claude/`.
 
-**Mechanism:** check 3 of [`scripts/quality.mjs`](scripts/quality.mjs), run by the workflow *Quality*: the file is byte for byte `@AGENTS.md` and an optional newline.
+**Mechanism:** check 3 of [`scripts/quality.mjs`](../scripts/quality.mjs), run by the workflow *Quality*: `.claude/CLAUDE.md` is byte for byte `@../AGENTS.md` and an optional newline, and no `CLAUDE.md` exists at the root. The check walks no worktree under `.claude/worktrees/`, each a full copy of the repository.
 
 ### INV-03 main changes only through a pull request
 
@@ -81,15 +81,15 @@ The adoption keeps the script, so every created repository holds the definition 
 
 A version names one commit: the tag `vX.Y.Z` is written once, on the merged commit, and never moved or deleted ([`SDLC.md` §10](SDLC.md#10-release), [§11](SDLC.md#11-rollback)).
 
-**Mechanism:** the workflow *Release* ([`.github/workflows/release.yml`](.github/workflows/release.yml)), on every push to `main`. [`scripts/release.mjs`](scripts/release.mjs) reads the version, releases nothing when the GitHub links at the foot of `CHANGELOG.md` do not all name `GITHUB_REPOSITORY` (RN-VER-004), refuses to go on when its tag names another commit, and releases only when `CHANGELOG.md` has a section for it and the tag does not exist yet; the workflow then writes the annotated tag on `GITHUB_SHA` and the Release with that section as its notes (RN-VER-003). That nobody writes a tag by hand is held by the limit of `AGENTS.md` §4: the ruleset `main` protects the branch, not tags.
+**Mechanism:** the workflow *Release* ([`.github/workflows/release.yml`](../.github/workflows/release.yml)), on every push to `main`. [`scripts/release.mjs`](../scripts/release.mjs) reads the version, releases nothing when the GitHub links at the foot of `CHANGELOG.md` do not all name `GITHUB_REPOSITORY` (RN-VER-004), refuses to go on when its tag names another commit, and releases only when `CHANGELOG.md` has a section for it and the tag does not exist yet; the workflow then writes the annotated tag on `GITHUB_SHA` and the Release with that section as its notes (RN-VER-003). That nobody writes a tag by hand is held by the limit of `AGENTS.md` §4: the ruleset `main` protects the branch, not tags.
 
-The link condition exists because a repository created from this one receives its `CHANGELOG.md`, `[0.1.0]` section included, in an initial commit pushed to `main`: without it, *Release* published this repository's `v0.1.0` there on creation (*observed*, #14). Check 6 of [`scripts/quality.mjs`](scripts/quality.mjs) holds the other side: the foot links name the repository the check runs in, so an adoption that forgets to rewrite them fails `Quality` on its pull request instead of leaving *Release* to skip in silence. Until the adoption, a created repository's `Quality` therefore fails on that check, and says to rewrite the links.
+The link condition exists because a repository created from this one receives its `CHANGELOG.md`, `[0.1.0]` section included, in an initial commit pushed to `main`: without it, *Release* published this repository's `v0.1.0` there on creation (*observed*, #14). Check 6 of [`scripts/quality.mjs`](../scripts/quality.mjs) holds the other side: the foot links name the repository the check runs in, so an adoption that forgets to rewrite them fails `Quality` on its pull request instead of leaving *Release* to skip in silence. Until the adoption, a created repository's `Quality` therefore fails on that check, and says to rewrite the links.
 
 ### INV-05 The documents keep their form
 
 `CHANGELOG.md` keeps the format of Keep a Changelog 1.1.0, every relative link and anchor resolves, and no document carries a version footer (RN-VER-002, RN-DOC-005, RN-REP-003).
 
-**Mechanism:** checks 2, 4 and 5 of [`scripts/quality.mjs`](scripts/quality.mjs), run by the workflow *Quality*. Anchors are computed as GitHub computes them (lowercase, punctuation dropped, spaces as hyphens, `-1`, `-2`… for repeated headings), which is what keeps the links of `AGENTS.md` into this document from rotting silently. Code blocks and inline code are skipped, so a link or a footer quoted as code is not read as one. A footer is a line *starting* with "Last revised", "Last updated", "Revision date", "Internal document" and the like; the words inside a sentence are not one.
+**Mechanism:** checks 2, 4 and 5 of [`scripts/quality.mjs`](../scripts/quality.mjs), run by the workflow *Quality*. Anchors are computed as GitHub computes them (lowercase, punctuation dropped, spaces as hyphens, `-1`, `-2`… for repeated headings), which is what keeps the links of `AGENTS.md` into this document from rotting silently. Code blocks and inline code are skipped, so a link or a footer quoted as code is not read as one. A footer is a line *starting* with "Last revised", "Last updated", "Revision date", "Internal document" and the like; the words inside a sentence are not one.
 
 ## 4. Integrations
 
@@ -99,7 +99,7 @@ The link condition exists because a repository created from this one receives it
 
 - *Template repositories:* a repository is created from this one with *Use this template* or `gh repo create --template`, receiving a copy of the files of the default branch in one initial commit, with no link back and no settings ([ADR-004](#adr-004-a-github-template-repository-copied-once)). What makes this repository offer them is GitHub's *Template repository* flag, which the owner sets with `gh repo edit --template` (*declared*).
 - *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
-- *Issues and milestones:* GitHub's blank issue and default labels; a milestone per version ([ADR-005](#adr-005-githubs-defaults-for-issues-pull-requests-and-labels)).
+- *Issues and milestones:* GitHub's blank issue, its default labels and the product label families a repository declares in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones); a milestone per version ([ADR-008](#adr-008-githubs-default-labels-are-a-floor)).
 - *Actions:* the workflows *Quality* and *Release* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack.
 
 **npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). The npm organisation `memorysmithapp` exists since 2026-10-12, which reserves the scope, and is on the **free plan, which publishes public packages only**; a private package would need the paid Teams plan (*declared* by the owner in #1). No npm token exists (*declared*). Therefore, in the `package.json` of every repository of the organisation:
@@ -142,7 +142,7 @@ The records ADR-001 to ADR-007 are **reconstructed**: the decisions were taken b
 - **Decision:** `CLAUDE.md` is the single line `@AGENTS.md` (RN-DOC-002).
 - **Rationale:** the import makes Claude Code load the instructions automatically in every session and sub-agent; a `CLAUDE.md` that mentioned `AGENTS.md` in prose would not. One file holds the instructions for every agent.
 - **Consequences:** nothing is written in `CLAUDE.md`; [INV-02](#inv-02-claudemd-is-only-the-import).
-- **Date:** 2026-10-12. **Status:** Accepted. **Origin:** reconstructed; declared by the owner in #1.
+- **Date:** 2026-10-12. **Status:** Superseded by [ADR-009](#adr-009-the-root-holds-only-what-a-tool-looks-for-there). **Origin:** reconstructed; declared by the owner in #1.
 
 ### ADR-003 The version lives in the root package.json
 
@@ -166,7 +166,7 @@ The records ADR-001 to ADR-007 are **reconstructed**: the decisions were taken b
 - **Decision:** GitHub's blank issue, no issue or pull request templates, GitHub's default labels. The format of a PR description lives as text in [`SDLC.md` §6](SDLC.md#6-pull-request).
 - **Rationale:** nothing to maintain or to copy, and the format of a PR is read where the process is.
 - **Consequences:** the PR format is followed by reading, not by a form.
-- **Date:** 2026-10-12. **Status:** Accepted. **Origin:** reconstructed; declared by the owner in #1.
+- **Date:** 2026-10-12. **Status:** Superseded by [ADR-008](#adr-008-githubs-default-labels-are-a-floor). **Origin:** reconstructed; declared by the owner in #1.
 
 ### ADR-006 The npm scope @memorysmithapp
 
@@ -181,5 +181,21 @@ The records ADR-001 to ADR-007 are **reconstructed**: the decisions were taken b
 - **Context:** a starting point made of placeholders shows a structure but never proves it.
 - **Decision:** `AGENTS.md`, `PRD.md`, `ARCHITECTURE.md` and `SDLC.md` are real documents describing this repository; each marks which of its sections a created repository keeps and which it rewrites (RN-DOC-003).
 - **Rationale:** a structure that cannot describe a small repository will not describe a large one, and this repository is small and new enough that nothing breaks if a part is wrong.
-- **Consequences:** a created repository has an adoption step ([`AGENTS.md` §8](AGENTS.md#8-adopting-this-repository), RN-ADO-001) that empties the content and keeps the process.
+- **Consequences:** a created repository has an adoption step ([`AGENTS.md` §8](../AGENTS.md#8-adopting-this-repository), RN-ADO-001) that empties the content and keeps the process.
 - **Date:** 2026-10-12. **Status:** Accepted. **Origin:** reconstructed; declared by the owner in #1.
+
+### ADR-008 GitHub's default labels are a floor
+
+- **Context:** ADR-005 allowed GitHub's default labels and nothing else. A product repository needs to say which business domain an issue affects and which part of the product it touches, and `memorysmithapp/memorysmithapp` is the first to need it, with its `domain:` and `layer:` labels (*declared*). A created repository starts with no record of this section, so a rule written only in an ADR never reaches it.
+- **Decision:** GitHub's blank issue, and no issue or pull request templates, as in ADR-005. GitHub's default labels are the base and are never removed; a repository may add product label families on top of them, declared in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones).
+- **Rationale:** the defaults cost nothing to keep, and a product needs to classify its issues by its own parts. How labels are used is process, and `SDLC.md` is kept on adoption, so the rule reaches every created repository.
+- **Consequences:** what a repository adds is written in `SDLC.md`, not in an ADR. No script creates labels: each family carries in `SDLC.md` the `gh label create` commands that create it.
+- **Date:** 2026-10-17. **Status:** Accepted. **Origin:** #23.
+
+### ADR-009 The root holds only what a tool looks for there
+
+- **Context:** every document sat at the root beside `package.json`, the lockfile and the dotfiles, which in a repository with code pushes the code down the listing a developer opens first. ADR-001 names the documents without saying where they live, and ADR-002 put `CLAUDE.md` at the root. Only some of these files have a reason to be there: GitHub renders `README.md` and detects `LICENSE` only at the root, the agents that read `AGENTS.md` look for it there, and `CHANGELOG.md` is there by Keep a Changelog's convention and because the scripts read it there (*observed*). Claude Code also loads `.claude/CLAUDE.md` (*observed* in fresh sessions, #24).
+- **Decision:** the root holds only what a tool or a convention looks for there. `PRD.md`, `ARCHITECTURE.md` and `SDLC.md` live in `docs/`. `CLAUDE.md` lives in `.claude/` as the single line `@../AGENTS.md`, and none sits at the root (RN-DOC-008).
+- **Rationale:** the root lists what a person or a tool opens first, and nothing looks for the three documents there. An `@` import resolves from the file that holds it, so the line in `.claude/` names the parent directory.
+- **Consequences:** documents in `docs/` link to the root through `../`. `.claude/` is tracked, so `.gitignore` keeps out what Claude Code writes there for one person: `settings.local.json` and `worktrees/`. Prose keeps naming a document by its file name (`SDLC.md` §2); only a link carries its path. [INV-02](#inv-02-claudemd-is-only-the-import) checks the new line and the absence of a root `CLAUDE.md`.
+- **Date:** 2026-10-17. **Status:** Accepted. **Origin:** #24.
