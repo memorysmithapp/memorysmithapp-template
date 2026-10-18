@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- The workflow `Release` no longer fails on a push to `main` that does not bump the version once that version is tagged: a tag on an ancestor of the merged commit means the push is not a release, and only a tag on a commit that is not an ancestor fails (#26).
+
 ## [0.3.0] - 2026-10-17
 
 ### Changed
