@@ -1,6 +1,6 @@
 {
   "name": "@memorysmithapp/template",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "description": "The starting point of every repository of the memorysmithapp organisation: the documents humans and agents work by.",
   "license": "MIT",
