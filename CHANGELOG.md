@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-16
+
+### Fixed
+
+- The workflow `Release`, run again on a commit whose tag it pushed but whose GitHub Release it failed to create, now creates the missing Release with the notes of the version's section, instead of skipping it and reporting green. It reads whether the Release exists with `gh`, and fails when it cannot tell (#35).
+
+### Changed
+
+- `PRD.md` marks RN-VER-005 *observed* at the release of v0.4.0, and `ARCHITECTURE.md` §4 records that the tag's push and the GitHub Release ran on Ubuntu 26.04 there (#34).
+- `SDLC.md` §2 registers a gap at its origin: process in `memorysmithapp-template`, notation in `memorysmithapp-markdown`, product in `memorysmithapp`, with a sub-issue in each other repository it reaches, opened when it is registered. The agent registers them and reports their links without asking whether to open them, and the go-ahead and the milestone stay with the owner. `AGENTS.md` §4 points at it (#36).
+- `SDLC.md` closes the issue of a single-purpose branch when its pull request is merged to `main`, naming the merge commit, instead of on the branch before review; gives such an issue the milestone of the next version, whose cut carries its `[Unreleased]` entry; and says when a fix of a released version is a patch version of its own rather than an entry of the open cycle, and that the open cycle then brings `main` in (#37).
+
 ## [0.4.0] - 2026-11-16
 
 ### Added
@@ -79,7 +91,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...v0.3.0

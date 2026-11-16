@@ -32,6 +32,8 @@ jobs:
           package-manager-cache: false
       - name: Decide
         id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: node scripts/release.mjs "$RUNNER_TEMP/notes.md" >> "$GITHUB_OUTPUT"
       - name: Write the annotated tag on the merged commit
         if: steps.plan.outputs.action == 'release'
@@ -42,15 +44,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag --annotate --cleanup=verbatim "$TAG" --message "$TAG" --message "$(cat "$RUNNER_TEMP/notes.md")" "$GITHUB_SHA"
           git push origin "refs/tags/$TAG"
+      # Also when the tag is in place and the Release is missing, as after a run that failed between them.
       - name: Create the GitHub Release
-        if: steps.plan.outputs.action == 'release'
+        if: steps.plan.outputs.action == 'release' || steps.plan.outputs.action == 'publish'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.plan.outputs.tag }}
         run: gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
       # Also on a run started again on the tagged commit, so that it finishes a run that failed here.
       - name: Close the milestone of the version
-        if: steps.plan.outputs.action == 'release' || steps.plan.outputs.action == 'tagged'
+        if: steps.plan.outputs.action == 'release' || steps.plan.outputs.action == 'publish' || steps.plan.outputs.action == 'tagged'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.plan.outputs.tag }}

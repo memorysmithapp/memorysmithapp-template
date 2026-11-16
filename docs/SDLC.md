@@ -50,9 +50,11 @@ This repository declares no product labels.
 
 **An issue before implementing.** When the owner asks for an opinion, or says "open the issue", the answer is to register the issue and ask; implementation starts only on an explicit go-ahead.
 
-**The go-ahead puts the issue in a milestone**, the version that will carry it, and work starts on the branch [§3](#3-branches) assigns it: for anything delivered, that milestone's `release/vX.Y.Z`, created from `main` if it does not exist yet.
+**The go-ahead puts the issue in a milestone**, the version that will carry it, and work starts on the branch [§3](#3-branches) assigns it: for anything delivered, that milestone's `release/vX.Y.Z`, created from `main` if it does not exist yet. An issue whose change reaches `main` by a single-purpose branch takes the milestone of the next version, the one whose cut carries its `[Unreleased]` entry.
 
 **A milestone per version declares its scope.** An issue in milestone `vX.Y.Z` is accepted for that cycle; one without a milestone has not been decided yet. A larger piece of work is one parent issue with **sub-issues** for its parts, in the order they are built.
+
+**A gap is registered at its origin.** The repositories of the organization share a process and a notation, so a gap found in one of them is checked against the others it could reach. Each kind of change has an origin repository: the process (`AGENTS.md`, `docs/SDLC.md`, the repository files, the workflows and scripts that check and release a repository) in `memorysmithapp-template`; the notation, its specification and its renderer in `memorysmithapp-markdown`; the product in `memorysmithapp`. The gap is registered as an issue in its origin repository, carrying the origin's own change, with a **sub-issue** in each other repository it reaches, holding that repository's adaptation and its own "Done when". A change that needs work in another repository opens that repository's sub-issue when it is registered, never in a closing comment. Registering is not implementing: the agent registers the issue and its sub-issues and reports their links without asking whether to open them, and the go-ahead and the milestone stay with the owner, in each repository. Each issue closes by its own repository's rule ([§5](#5-when-an-issue-closes)), and the parent shows through its sub-issues how far the others are. Otherwise the same finding reaches the owner several times, by several paths, and what applies elsewhere lives in a comment until somebody remembers it.
 
 **Refusal is an outcome, and it is written down:** the issue closes as *not planned*, with the reason in a comment.
 
@@ -111,13 +113,13 @@ On `main`, documents and code never diverge. Inside a branch they move in step: 
 
 ## 5. When an issue closes
 
-The issue of a delivery closes **when its commit lands on the branch of the cycle**, the `release/vX.Y.Z` of its milestone, not when that branch reaches `main`: committed there, or merged there from a `feat/` or `fix/` branch. A commit on a `feat/` or `fix/` branch closes nothing. A change that reaches `main` by a single-purpose branch ([§3](#3-branches)) has that branch as its branch of the cycle. The issue stays in its milestone and closes as `completed`, with a comment naming the commit. A refused issue closes as *not planned*, with the reason.
+The issue of a delivery closes **when its commit lands on the branch of the cycle**, the `release/vX.Y.Z` of its milestone, not when that branch reaches `main`: committed there, or merged there from a `feat/` or `fix/` branch. A commit on a `feat/` or `fix/` branch closes nothing. The issue of a change that reaches `main` by a single-purpose branch ([§3](#3-branches)) closes instead when its pull request is merged to `main`, and its comment names the merge commit: until then the owner has not accepted the change, and it may never reach `main`. The issue stays in its milestone and closes as `completed`, with a comment naming the commit. A refused issue closes as *not planned*, with the reason.
 
 The consequence is counterintuitive and accepted: during the cycle there are closed issues whose work is not on `main` yet. What declares the scope of the version is the **milestone**; what takes everything to `main` is the single pull request of the cycle.
 
 ## 6. Pull request
 
-A pull request references issues by `#N`, **never with `Closes #N`** or another closing keyword: each issue closed already, when its commit landed on the branch ([§5](#5-when-an-issue-closes)).
+A pull request references issues by `#N`, **never with `Closes #N`** or another closing keyword: the issue of a cycle closed already, when its commit landed on the release branch, and the issue of a single-purpose branch is closed after the merge with a comment naming the merge commit ([§5](#5-when-an-issue-closes)).
 
 Every PR description has three sections, in this order.
 
@@ -220,12 +222,12 @@ The bump flow, in this order:
 4. The merge is a push to `main`, which runs the workflow **Release** on the merged commit:
    1. it reads the `version` of the root `package.json`;
    2. if the links at the foot of `CHANGELOG.md` do not name this repository, it does nothing: the changelog is still the copy of another repository's, as in a repository just created from `memorysmithapp-template`;
-   3. if the tag `vX.Y.Z` already exists **on this commit**, it does nothing; if it exists on an **ancestor** of this commit, it does nothing either: the version was released earlier, and the push is not a release; if it exists on **any other** commit, it fails, because a version names one commit;
+   3. if the tag `vX.Y.Z` already exists **on this commit**, it writes no tag, and creates the GitHub Release `vX.Y.Z` only if it is missing, with the notes of that version's section; if it exists on an **ancestor** of this commit, it does nothing either: the version was released earlier, and the push is not a release; if it exists on **any other** commit, it fails, because a version names one commit;
    4. if `CHANGELOG.md` has no released section `[X.Y.Z]`, it does nothing: the push was not a release;
    5. otherwise it writes the **annotated** tag `vX.Y.Z` on the merged commit and creates the GitHub Release `vX.Y.Z` with the notes of that section;
    6. after the Release, it closes the milestone `vX.Y.Z`. A milestone that still holds an open issue or pull request stays open, and the run summary names each one; a version with no milestone is not an error, and the summary says so. Neither fails the release.
 
-Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything; a push that releases nothing closes no milestone. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, and the milestone is closed on that run too, so running it again is safe.
+Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything; a push that releases nothing closes no milestone. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, a Release that is missing is created, and the milestone is closed on that run too, so running it again is safe and finishes what the failed run left.
 
 **A repository that publishes to npm** adds to this flow the publish of the cut version, from the workflow that releases it, through npm trusted publishing; its packages declare `"publishConfig": { "access": "public" }`, and every package not meant to be published declares `"private": true`. Why both fields are required is in [`ARCHITECTURE.md` §4](ARCHITECTURE.md#4-integrations) (npm).
 
@@ -236,6 +238,8 @@ When a cycle is cut, every issue delivered in it is closed already ([§5](#5-whe
 A released version that turns out wrong is **never undone by moving or deleting its tag**: a version names one commit, and somebody may have taken it already.
 
 For a repository that ships no deployable, as this one, the correction is a **new patch version**: the fix enters `[Unreleased]` under `Fixed` on the `release/vX.Y.Z` of that patch version, committed there or brought there from a `fix/` branch ([§3](#3-branches)), and is cut and released by the flow of [§10](#10-release). A repository that deploys extends this section with how it returns production to the previous version while the fix travels.
+
+**A fix of a released version while a cycle is open** becomes a patch version of its own when the released version is wrong in a way a person meets before the open cycle is cut; otherwise it enters the open cycle under `Fixed`. The criterion is the owner's, and the go-ahead says which. The patch is the `release/vX.Y.Z` of that patch version, created from `main`; once it is merged, the open cycle's branch brings `main` in, so that its `package.json` and `CHANGELOG.md` keep the released patch.
 
 ## 12. Done criteria
 
