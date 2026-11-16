@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `SDLC.md` closes the issue of a single-purpose branch when its pull request is merged to `main`, naming the merge commit, instead of on the branch before review; gives such an issue the milestone of the next version, whose cut carries its `[Unreleased]` entry; and says when a fix of a released version is a patch version of its own rather than an entry of the open cycle, and that the open cycle then brings `main` in (#37).
+
 ## [0.4.0] - 2026-11-16
 
 ### Added
