@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-16
+
 ### Added
 
 - The workflow `Release` closes the milestone `vX.Y.Z` after it releases that version, and again on a run started again on the tagged commit. A milestone that still holds an open issue or pull request stays open and the run summary names each one; a version with no milestone is not an error, and neither fails the release. It runs `scripts/close-milestone.mjs` with `issues: write` beside `contents: write`; RN-VER-005 (#32).
@@ -77,7 +79,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.1...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.0...v0.2.1

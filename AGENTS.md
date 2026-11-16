@@ -84,8 +84,8 @@ Each command with the directory it runs in, what it does, and the date somebody 
 | Command | Run in | What it does | Last verified |
 |---|---|---|---|
 | `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, and the ruleset `main`; idempotent | 2026-10-12, against a throwaway repository |
-| `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](docs/SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-10-17 |
-| `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-10-17 |
+| `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](docs/SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-11-16 |
+| `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-11-16 |
 
 ## 7. Before calling something done
 
