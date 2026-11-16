@@ -74,13 +74,13 @@ This repository declares no product labels.
 | `feat/` | One feature, worked apart from the rest of its cycle | The `release/vX.Y.Z` of its milestone, never `main` | `feat/setup-labels` |
 | `fix/` | One fix, worked apart from the rest of its cycle | The `release/vX.Y.Z` of its milestone, never `main` | `fix/quality-anchor-slug` |
 | `docs/` | Documentation and repository governance | `main` | `docs/sdlc-rollback` |
-| `chore/` | Maintenance of what is not delivered: CI checks, repository configuration | `main` | `chore/bump-pnpm` |
+| `chore/` | Maintenance of what is not delivered: repository configuration, and CI where it is not delivered | `main` | `chore/bump-pnpm` |
 
 `release/` carries no Conventional Commits type on purpose: a cycle holds many types at once. The commits inside it keep their types.
 
-**Which branch takes what.** A change to what the repository delivers or publishes (code and its tests, a package and its dependencies, a script or workflow that builds, releases or publishes it) always lands on the `release/vX.Y.Z` of its issue's milestone: committed there, or brought there by a pull request whose base is that branch. It never reaches `main` any other way. In a repository whose scripts and workflows are themselves what it delivers, as this one, they count as delivered.
+**Which branch takes what.** A change to what the repository delivers or publishes (code and its tests, a package and its dependencies, a script or workflow that builds, releases or publishes it) always lands on the `release/vX.Y.Z` of its issue's milestone: committed there, or brought there by a pull request whose base is that branch. It never reaches `main` any other way. In a repository whose scripts and workflows are themselves what it delivers, as this one, they count as delivered, the checks of its CI included, and the specific rule wins over the list below.
 
-A single-purpose branch reaches `main` with a pull request of its own only when it touches nothing delivered or published: documents, the CI that checks the repository, its configuration. Its `CHANGELOG.md` entry waits in `[Unreleased]` for the next cut ([§9](#9-versioning)). A **hotfix** is not an exception: it is a release of its own, the `release/vX.Y.Z` of the patch version, holding the fix and its cut ([§11](#11-rollback)).
+A single-purpose branch reaches `main` with a pull request of its own only when it touches nothing delivered or published: documents, the CI that checks the repository where it is not delivered, its configuration. Its `CHANGELOG.md` entry waits in `[Unreleased]` for the next cut ([§9](#9-versioning)). A **hotfix** is not an exception: it is a release of its own, the `release/vX.Y.Z` of the patch version, holding the fix and its cut ([§11](#11-rollback)).
 
 A cycle has **one** branch and **one** pull request to `main` at its end. No pull request to `main` is opened per issue: it would need a branch per issue and leave a merge button available with the version half done. A `feat/` or `fix/` branch opens its pull request against the release branch of its milestone.
 
