@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- The workflow `Release`, run again on a commit whose tag it pushed but whose GitHub Release it failed to create, now creates the missing Release with the notes of the version's section, instead of skipping it and reporting green. It reads whether the Release exists with `gh`, and fails when it cannot tell (#35).
+
 ### Changed
 
 - `PRD.md` marks RN-VER-005 *observed* at the release of v0.4.0, and `ARCHITECTURE.md` §4 records that the tag's push and the GitHub Release ran on Ubuntu 26.04 there (#34).

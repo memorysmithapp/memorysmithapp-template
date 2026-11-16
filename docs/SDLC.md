@@ -222,12 +222,12 @@ The bump flow, in this order:
 4. The merge is a push to `main`, which runs the workflow **Release** on the merged commit:
    1. it reads the `version` of the root `package.json`;
    2. if the links at the foot of `CHANGELOG.md` do not name this repository, it does nothing: the changelog is still the copy of another repository's, as in a repository just created from `memorysmithapp-template`;
-   3. if the tag `vX.Y.Z` already exists **on this commit**, it does nothing; if it exists on an **ancestor** of this commit, it does nothing either: the version was released earlier, and the push is not a release; if it exists on **any other** commit, it fails, because a version names one commit;
+   3. if the tag `vX.Y.Z` already exists **on this commit**, it writes no tag, and creates the GitHub Release `vX.Y.Z` only if it is missing, with the notes of that version's section; if it exists on an **ancestor** of this commit, it does nothing either: the version was released earlier, and the push is not a release; if it exists on **any other** commit, it fails, because a version names one commit;
    4. if `CHANGELOG.md` has no released section `[X.Y.Z]`, it does nothing: the push was not a release;
    5. otherwise it writes the **annotated** tag `vX.Y.Z` on the merged commit and creates the GitHub Release `vX.Y.Z` with the notes of that section;
    6. after the Release, it closes the milestone `vX.Y.Z`. A milestone that still holds an open issue or pull request stays open, and the run summary names each one; a version with no milestone is not an error, and the summary says so. Neither fails the release.
 
-Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything; a push that releases nothing closes no milestone. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, and the milestone is closed on that run too, so running it again is safe.
+Every push to `main` runs the workflow, and only the push that carries a cut version's section with no tag yet releases anything; a push that releases nothing closes no milestone. A run that failed is run again from the Actions tab once the cause is fixed; a tag that already names the merged commit is left as it is, a Release that is missing is created, and the milestone is closed on that run too, so running it again is safe and finishes what the failed run left.
 
 **A repository that publishes to npm** adds to this flow the publish of the cut version, from the workflow that releases it, through npm trusted publishing; its packages declare `"publishConfig": { "access": "public" }`, and every package not meant to be published declares `"private": true`. Why both fields are required is in [`ARCHITECTURE.md` §4](ARCHITECTURE.md#4-integrations) (npm).
 
