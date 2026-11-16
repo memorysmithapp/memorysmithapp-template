@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Removed
+
+- `.github/CODEOWNERS`. The ruleset `main` requires no approval and no code owner review, and who merges to `main` is the branch protection's, which lets only the team `maintainers` merge (#39); the file only requested a review, never from the author of the pull request, and its line "Every change needs the approval of the repository owner" was false (#40).
+
 ## [0.4.1] - 2026-11-16
 
 ### Fixed
