@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `scripts/setup-repo.sh` also gives the organization's team `maintainers` write on the repository and sets the branch protection of the default branch, restricting pushes, and so merges, to that team, administrators included, with no force push, no deletion, and no review or check of its own; idempotent as before, comparing it in the shape of its request. It refuses a repository not owned by an organization, an organization without the team `maintainers`, and a default branch with no commit; RN-REP-001, RN-REP-002 (#39).
 - Only a maintainer merges to `main`, with no approval and nothing bypassed; a contributor keeps write, and merges into a `release/vX.Y.Z`, never into `main`. `SDLC.md` §1, §7, §8 and §10 say it, `ARCHITECTURE.md` INV-03, §4 and §5 describe the ruleset and the branch protection, ADR-010 records the decision, `PRD.md` adds RN-REP-004 and the terms *Maintainer* and *Contributor*, and `AGENTS.md` INV-03 and the limit on rulesets cover the branch protection (#39).
 
+### Removed
+
+- `.github/CODEOWNERS`. The ruleset `main` requires no approval and no code owner review, and who merges to `main` is the branch protection's, which lets only the team `maintainers` merge (#39); the file only requested a review, never from the author of the pull request, and its line "Every change needs the approval of the repository owner" was false (#40).
+
 ## [0.4.1] - 2026-11-16
 
 ### Fixed
