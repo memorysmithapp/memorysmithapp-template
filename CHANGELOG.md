@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `PRD.md` marks RN-REP-004 *declared* for a contributor's refused merge to `main`, no longer **To confirm**, and records a maintainer's merge observed passing with no review and no bypass at #41 and #42. The owner removed the contributor's test from the "Done when" of #39: no contributor works in this repository (#39).
+
 ## [0.5.0] - 2026-11-16
 
 ### Changed
