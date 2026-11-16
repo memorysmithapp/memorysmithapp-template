@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-16
+
 ### Fixed
 
 - The workflow `Release`, run again on a commit whose tag it pushed but whose GitHub Release it failed to create, now creates the missing Release with the notes of the version's section, instead of skipping it and reporting green. It reads whether the Release exists with `gh`, and fails when it cannot tell (#35).
@@ -89,7 +91,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.2.1...v0.3.0
