@@ -1,6 +1,6 @@
-# Tags and publishes a version once its bump is merged, so that nobody tags by hand
-# (scripts/release.mjs decides; SDLC.md §10 describes the flow). Uses only the workflow's
-# GITHUB_TOKEN, and no stored secret.
+# Tags and publishes a version once its bump is merged, so that nobody tags by hand, and closes
+# its milestone (scripts/release.mjs decides; scripts/close-milestone.mjs closes; SDLC.md §10
+# describes the flow). Uses only the workflow's GITHUB_TOKEN, and no stored secret.
 name: Release
 
 on:
@@ -9,6 +9,8 @@ on:
 
 permissions:
   contents: write
+  # Changing a milestone needs it.
+  issues: write
 
 concurrency:
   group: release
@@ -46,3 +48,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.plan.outputs.tag }}
         run: gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+      # Also on a run started again on the tagged commit, so that it finishes a run that failed here.
+      - name: Close the milestone of the version
+        if: steps.plan.outputs.action == 'release' || steps.plan.outputs.action == 'tagged'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.plan.outputs.tag }}
+        run: node scripts/close-milestone.mjs "$TAG"

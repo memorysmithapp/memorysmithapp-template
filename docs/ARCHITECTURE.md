@@ -16,7 +16,7 @@ The repository carries no product code. It is made of:
 - **Repository files:** `package.json`, the one home of the version; `.gitignore`, `.editorconfig` and `LICENSE`.
 - **A setup script**, `scripts/setup-repo.sh`, which applies to a repository the GitHub configuration a copy does not carry, and puts it back when it drifts.
 - **A quality workflow**, `.github/workflows/quality.yml`, which runs `scripts/quality.mjs` on every pull request and push to `main`; the ruleset requires it.
-- **A release workflow**, `.github/workflows/release.yml`, which tags and publishes a version once its bump is merged.
+- **A release workflow**, `.github/workflows/release.yml`, which tags and publishes a version once its bump is merged, and closes its milestone.
 - **GitHub configuration**: the ruleset `main` and the settings the script applies.
 
 Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an invariant is stated in `AGENTS.md` and its mechanism here; a rule is stated in `PRD.md` and enforced where §3 says.
@@ -40,9 +40,11 @@ Each fact has one home ([`PRD.md` RN-DOC-004](PRD.md#7-features-and-rules)): an 
 | `scripts/quality.test.mjs` | The tests of the checks, one deliberate violation each, on `node:test` |
 | `scripts/release.mjs` | Decides what the workflow *Release* does on a push to `main`: release, nothing, or fail (RN-VER-003) |
 | `scripts/release.test.mjs` | The tests of that decision |
+| `scripts/close-milestone.mjs` | Closes the milestone of a version the workflow *Release* released, or leaves it open and names what it still holds (RN-VER-005) |
+| `scripts/close-milestone.test.mjs` | The tests of what it does to a milestone |
 | `scripts/lib/changelog.mjs` | Reads `CHANGELOG.md`: its sections, categories, link definitions and the notes of a version |
 | `.github/workflows/quality.yml` | The workflow *Quality*, job `Quality` |
-| `.github/workflows/release.yml` | The workflow *Release*, which writes the tag and the GitHub Release of a merged version |
+| `.github/workflows/release.yml` | The workflow *Release*, which writes the tag and the GitHub Release of a merged version and closes its milestone |
 | `pnpm-lock.yaml` | Written by pnpm; with no dependency, it records only the pinned pnpm |
 | `.gitignore` | Dependencies, build output, coverage, environment files, logs, operating-system and editor files, and Claude Code's personal settings and worktrees under `.claude/` |
 | `.editorconfig` | UTF-8, LF, two spaces, final newline |
@@ -99,7 +101,7 @@ The link condition exists because a repository created from this one receives it
 
 - *Template repositories:* a repository is created from this one with *Use this template* or `gh repo create --template`, receiving a copy of the files of the default branch in one initial commit, with no link back and no settings ([ADR-004](#adr-004-a-github-template-repository-copied-once)). What makes this repository offer them is GitHub's *Template repository* flag, which the owner sets with `gh repo edit --template` (*declared*).
 - *Rulesets and settings:* the ruleset `main` of [INV-03](#inv-03-main-changes-only-through-a-pull-request), and the description, topics, merge options, wiki and discussions, all through the REST API by `scripts/setup-repo.sh` with the `gh` of an administrator.
-- *Issues and milestones:* GitHub's blank issue, its default labels and the product label families a repository declares in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones); a milestone per version ([ADR-008](#adr-008-githubs-default-labels-are-a-floor)).
+- *Issues and milestones:* GitHub's blank issue, its default labels and the product label families a repository declares in [`SDLC.md` §2](SDLC.md#2-issues-and-milestones); a milestone per version ([ADR-008](#adr-008-githubs-default-labels-are-a-floor)), closed by the workflow *Release* once the version is released (RN-VER-005).
 - *Actions:* the workflows *Quality* and *Release* on `ubuntu-latest`, with Node 24 from `actions/setup-node` and the pnpm of `packageManager` through Corepack. Nothing they run installs a system package, so the label is left to follow GitHub's images: when it moved to Ubuntu 26.04 (actions/runner-images#14748), every step of *Quality*, and *Release*'s decision (`action=skip` on a push after a tag) and annotated tag, ran green on `ubuntu-26.04` (*observed* on 2026-10-18, #27); the tag's push and the GitHub Release had not run there yet.
 
 **npm.** Any package a repository of the organisation publishes uses the scope `@memorysmithapp` ([ADR-006](#adr-006-the-npm-scope-memorysmithapp)). The npm organisation `memorysmithapp` exists since 2026-10-12, which reserves the scope, and is on the **free plan, which publishes public packages only**; a private package would need the paid Teams plan (*declared* by the owner in #1). No npm token exists (*declared*). Therefore, in the `package.json` of every repository of the organisation:
@@ -114,7 +116,7 @@ The link condition exists because a repository created from this one receives it
 
 **Quality** (`.github/workflows/quality.yml`) runs on every pull request and every push to `main`, with `contents: read` and no secret; it reads the branch from `GITHUB_HEAD_REF` or `GITHUB_REF_NAME` for check 1.
 
-**Release** (`.github/workflows/release.yml`) runs on every push to `main`, reads the repository it runs in from `GITHUB_REPOSITORY`, one run at a time (`concurrency: release`), with `contents: write` for the workflow's own `GITHUB_TOKEN` and no stored secret: it pushes the tag with git, as `github-actions[bot]`, and creates the Release with `gh`. A tag pushed with that token starts no other workflow.
+**Release** (`.github/workflows/release.yml`) runs on every push to `main`, reads the repository it runs in from `GITHUB_REPOSITORY`, one run at a time (`concurrency: release`), with `contents: write` and `issues: write` for the workflow's own `GITHUB_TOKEN` and no stored secret: it pushes the tag with git, as `github-actions[bot]`, creates the Release with `gh`, and closes the milestone through the REST API with `gh` in `scripts/close-milestone.mjs`, which GitHub allows only with `issues: write`. That step runs when the decision is `release` or `tagged`, writes what it did to the run summary, and fails only when GitHub cannot be read or written. A tag pushed with that token starts no other workflow.
 
 There is no deployable. `scripts/setup-repo.sh` runs on a person's machine, once when a repository is created and again whenever its settings drift, with the permissions of the administrator whose `gh` it uses; it needs no token of its own.
 

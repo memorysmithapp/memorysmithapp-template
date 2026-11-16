@@ -57,7 +57,8 @@ One line each; the reason lives where the link points.
 
 - `main` is protected: every change reaches it through a pull request. Never push to `main`; never use `--admin`, *Bypass rules*, `--no-verify` or an equivalent ([SDLC §1](docs/SDLC.md#1-the-life-cycle-of-a-change)).
 - A blocked merge means **stop and report**, never work around it ([SDLC §7](docs/SDLC.md#7-a-blocked-merge)).
-- An issue before implementing. An opinion asked for, or "open the issue", means register and ask; implement only on an explicit go-ahead from the owner ([SDLC §2](docs/SDLC.md#2-issues-and-milestones)).
+- An issue before implementing. An opinion asked for, or "open the issue", means register and ask; implement only on an explicit go-ahead from the owner, which puts the issue in a milestone ([SDLC §2](docs/SDLC.md#2-issues-and-milestones)).
+- Anything delivered or published lands on the `release/vX.Y.Z` of its issue's milestone, never on `main` from a `feat/` or `fix/` branch ([SDLC §3](docs/SDLC.md#3-branches)).
 - Nobody tags by hand: tags and Releases are written by the release workflow ([SDLC §10](docs/SDLC.md#10-release)).
 - A document never describes the future: if it is in a document, it is true now ([SDLC §2](docs/SDLC.md#2-issues-and-milestones)).
 - No version notes, revision dates or "internal document" footers inside documents; history lives in `CHANGELOG.md` and git ([SDLC §4](docs/SDLC.md#4-commits)).
@@ -83,8 +84,8 @@ Each command with the directory it runs in, what it does, and the date somebody 
 | Command | Run in | What it does | Last verified |
 |---|---|---|---|
 | `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, and the ruleset `main`; idempotent | 2026-10-12, against a throwaway repository |
-| `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](docs/SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-10-17 |
-| `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-10-17 |
+| `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](docs/SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-11-16 |
+| `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-11-16 |
 
 ## 7. Before calling something done
 
@@ -94,8 +95,8 @@ Each command with the directory it runs in, what it does, and the date somebody 
 - [ ] `CHANGELOG.md` has the entry under `[Unreleased]`, in the same commit as the change.
 - [ ] Every document the change touches is updated in the same commit ([SDLC §4.1](docs/SDLC.md#41-when-a-commit-touches-each-document)).
 - [ ] `.gitignore` was assessed for every file or directory created, moved or deleted; no sensitive file is left untracked without an entry.
-- [ ] The commit is pushed, and the CI of the branch is green.
-- [ ] The issue is closed as `completed`, with a comment naming the commit ([SDLC §5](docs/SDLC.md#5-when-an-issue-closes)).
+- [ ] The commit is on the branch of the cycle ([SDLC §3](docs/SDLC.md#3-branches)), pushed, and the CI of the branch is green.
+- [ ] The issue, in its milestone, is closed as `completed`, with a comment naming the commit ([SDLC §5](docs/SDLC.md#5-when-an-issue-closes)).
 
 ## 8. Adopting this repository
 
@@ -121,7 +122,7 @@ The commit does what follows. Followed as written, the result passes `Quality`, 
 3. **The template's history:** remove from every kept text the citations of `memorysmithapp-template`'s RN codes, ADRs and issue numbers. They name its rules, records and issues: in the new repository an ADR link would not resolve, and `#N` would name an unrelated issue. The sentence stays; only the citation goes. A claim marked *observed* or *declared* about this repository becomes **To confirm** until it is verified in the new one; the adopting session may verify it there and mark it *observed*. A fact of the organisation, such as the npm plan, keeps its status.
 4. **Markers:** remove every paragraph that marks a section as kept or rewritten, or says what the adoption does to a document, the one at the top of this file included: in a repository that is not a template they describe nothing. Each such marker stands in a paragraph of its own. The *Instruction* lines stay until their sections are filled.
 5. **Version:** reset `version` in `package.json` to `0.1.0`, and `CHANGELOG.md` to an `[Unreleased]` whose only entry, under `Changed`, records the adoption, with its foot link pointing at the new repository's `commits/main`: the workflow *Release* publishes only where the foot links name the repository, and `Quality` fails until they do.
-6. **Kept:** `SDLC.md` (but for step 4), `.claude/CLAUDE.md`, `LICENSE`, `.gitignore`, `.editorconfig`, `pnpm-lock.yaml`, §2–§7 of this file, `.github/workflows/`, `scripts/setup-repo.sh` (the mechanism of INV-03, run again whenever the ruleset drifts), `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/lib/` and their tests. §6 keeps the commands run in the new repository, with that date; the owner's run of `scripts/setup-repo.sh` counts, with the date the owner gives.
+6. **Kept:** `SDLC.md` (but for step 4), `.claude/CLAUDE.md`, `LICENSE`, `.gitignore`, `.editorconfig`, `pnpm-lock.yaml`, §2–§7 of this file, `.github/workflows/`, `scripts/setup-repo.sh` (the mechanism of INV-03, run again whenever the ruleset drifts), `scripts/quality.mjs`, `scripts/release.mjs`, `scripts/close-milestone.mjs`, `scripts/lib/` and their tests. §6 keeps the commands run in the new repository, with that date; the owner's run of `scripts/setup-repo.sh` counts, with the date the owner gives.
 7. **Deleted:** this section.
 
 Then the owner fills `PRD.md` and `ARCHITECTURE.md` with the project, issue by issue.
