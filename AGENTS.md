@@ -64,7 +64,7 @@ One line each; the reason lives where the link points.
 - A document never describes the future: if it is in a document, it is true now ([SDLC §2](docs/SDLC.md#2-issues-and-milestones)).
 - No version notes, revision dates or "internal document" footers inside documents; history lives in `CHANGELOG.md` and git ([SDLC §4](docs/SDLC.md#4-commits)).
 - Everything is written in American English (en-US): documents, code, comments, commits, branches, issue and PR text.
-- Create or delete a GitHub repository, or change a ruleset, only with the owner's go-ahead in the session.
+- Create or delete a GitHub repository, or change a ruleset or a branch protection, only with the owner's go-ahead in the session.
 
 ## 5. Invariants
 
@@ -72,7 +72,7 @@ One line each; the reason lives where the link points.
 
 - **INV-01** The version has exactly one home, the root `package.json`, and `CHANGELOG.md` agrees with it; RN-VER-001 ([mechanism](docs/ARCHITECTURE.md#inv-01-the-version-has-one-home)).
 - **INV-02** `.claude/CLAUDE.md` is exactly `@../AGENTS.md` and nothing else, and no `CLAUDE.md` sits at the root; RN-DOC-008 ([mechanism](docs/ARCHITECTURE.md#inv-02-claudemd-is-only-the-import)).
-- **INV-03** `main` changes only through a pull request; RN-REP-001 ([mechanism](docs/ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
+- **INV-03** `main` changes only through a pull request, merged by a maintainer; RN-REP-001, RN-REP-004 ([mechanism](docs/ARCHITECTURE.md#inv-03-main-changes-only-through-a-pull-request)).
 - **INV-04** Only the release workflow writes a tag, and a version names one commit; RN-VER-003, RN-VER-004 ([mechanism](docs/ARCHITECTURE.md#inv-04-only-the-release-workflow-writes-a-tag)).
 - **INV-05** The documents keep their form: the changelog's format, links and anchors that resolve, no version footers; RN-REP-003 ([mechanism](docs/ARCHITECTURE.md#inv-05-the-documents-keep-their-form)).
 
@@ -84,7 +84,7 @@ Each command with the directory it runs in, what it does, and the date somebody 
 
 | Command | Run in | What it does | Last verified |
 |---|---|---|---|
-| `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, and the ruleset `main`; idempotent | 2026-10-12, against a throwaway repository |
+| `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, the ruleset `main`, write for the team `maintainers`, and the branch protection of `main`; idempotent | 2026-11-16, against this repository, which it found already set up |
 | `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](docs/SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-11-16 |
 | `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-11-16 |
 
