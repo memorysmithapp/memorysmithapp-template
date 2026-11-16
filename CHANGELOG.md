@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `SDLC.md` says which branch takes what: a change to what the repository delivers or publishes lands on the `release/vX.Y.Z` of its issue's milestone, committed there or brought by a pull request whose base is that branch, and a single-purpose branch reaches `main` only when it touches nothing delivered; a hotfix is a release of its own. The go-ahead puts the issue in a milestone, "the branch of the cycle" in §5 and §12 names that release branch, and a commit on a `feat/` or `fix/` branch closes no issue. `AGENTS.md` §4 and §7 follow (#31).
+
 ## [0.3.1] - 2026-10-18
 
 ### Fixed
