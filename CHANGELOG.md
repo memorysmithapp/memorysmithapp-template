@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-16
+
 ### Changed
 
 - `scripts/setup-repo.sh` also gives the organization's team `maintainers` write on the repository and sets the branch protection of the default branch, restricting pushes, and so merges, to that team, administrators included, with no force push, no deletion, and no review or check of its own; idempotent as before, comparing it in the shape of its request. It refuses a repository not owned by an organization, an organization without the team `maintainers`, and a default branch with no commit; RN-REP-001, RN-REP-002 (#39).
@@ -100,7 +102,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.0...v0.3.1
