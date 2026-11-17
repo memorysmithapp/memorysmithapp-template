@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-11-17
+
+### Changed
+
+- `SDLC.md` answers four questions its branch rules left to a guess: while a release is open, a `docs/` or `chore/` issue takes that release's milestone (§2); `release/`, `docs/` and `chore/` branches start from `main`, `feat/` and `fix/` from the release branch they land on (§3); the open cycle brings `main` in with a merge committed on the release branch, without a pull request, the released sections of `CHANGELOG.md` kept as `main` has them and `[Unreleased]` holding both sides' entries (§3, §11); and after a merge into the release branch the closing comment names that merge commit (§5) (#44).
+
 ### Changed
 
 - `PRD.md` marks RN-REP-004 *declared* for a contributor's refused merge to `main`, no longer **To confirm**, and records a maintainer's merge observed passing with no review and no bypass at #41 and #42. The owner removed the contributor's test from the "Done when" of #39: no contributor works in this repository (#39).
@@ -107,6 +113,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
 [unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...HEAD
+[0.5.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.3.1...v0.4.0
