@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `scripts/setup-repo.sh` creates the branch protection of a repository whose default branch has none, as on a repository just created from the template, instead of dying with "cannot read the branch protection": under `pipefail`, `gh api … | grep -q 'HTTP 404'` took the exit status of `gh` and never saw the 404. gh's message is now captured and tested on its own (#46).
+
 ## [0.5.1] - 2026-11-17
 
 ### Changed
