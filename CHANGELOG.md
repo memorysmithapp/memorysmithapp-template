@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-11-20
+
+### Fixed
+
+- `scripts/setup-repo.sh` creates the branch protection of a repository whose default branch has none, as on a repository just created from the template, instead of dying with "cannot read the branch protection": under `pipefail`, `gh api … | grep -q 'HTTP 404'` took the exit status of `gh` and never saw the 404. gh's message is now captured and tested on its own (#46).
+
 ## [0.5.1] - 2026-11-17
 
 ### Changed
@@ -112,7 +118,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.2...HEAD
+[0.5.2]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.0...v0.4.1
