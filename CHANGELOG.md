@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.4] - 2026-11-22
+
 ### Changed
 
 - `SDLC.md` §2: each repository stands on its own. A gap is no longer registered at an origin repository with a sub-issue in every repository it reaches; a problem found in another repository is registered there, as one issue, and comparing with the template is a repository's own work, in its own cycle. `AGENTS.md` §4 says it in one line (#52).
@@ -132,7 +134,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.3...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.4...HEAD
+[0.5.4]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.3...v0.5.4
 [0.5.3]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...v0.5.1
