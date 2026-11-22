@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `SDLC.md` says two rules an agent was left to guess: a cycle is planned from every open issue, reviewed with the owner before the work starts, those that touch it recommended for inclusion, and leaving one out, or moving it to a later version, is the owner's decision with a reason (§2); and a workflow that delivers to staging or another environment is dispatched only on the owner's go-ahead, a go-ahead to implement not being one to deliver, while pushing a branch needs none (§8). `AGENTS.md` §4 states both in a line each (#49).
+
 ### Fixed
 
 - `scripts/setup-repo.sh` gives the organization's team `contributors` write on the repository, as it does for `maintainers`, and requires both teams to exist. A repository it set up left `contributors` out, so its members fell back to the organization's base permission, read, and could not push a branch, create a milestone or apply a label (#48).
