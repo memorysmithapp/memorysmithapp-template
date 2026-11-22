@@ -84,7 +84,7 @@ Each command with the directory it runs in, what it does, and the date somebody 
 
 | Command | Run in | What it does | Last verified |
 |---|---|---|---|
-| `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, the ruleset `main`, write for the team `maintainers`, and the branch protection of `main`; idempotent | 2026-11-20, against a public throwaway repository created from the template, whose `main` had no branch protection: it created it, and a second run changed nothing; and against this repository, which it found already set up |
+| `scripts/setup-repo.sh <owner>/<repo> "<description>" <topic>[,<topic>...]` | The root | Applies the description, topics, merge options, wiki and discussions off, the ruleset `main`, write for the teams `maintainers` and `contributors`, and the branch protection of `main`; idempotent | 2026-11-22, against a public throwaway repository created from the template, where neither team had access and `main` had no branch protection: it gave both teams write and created the protection, and a second run changed nothing |
 | `pnpm run quality` | The root | Runs the checks of the workflow *Quality* ([SDLC §8](docs/SDLC.md#8-tests-and-review)); exit 1 and the failing lines when one fails | 2026-11-20 |
 | `pnpm test` | The root | Runs the tests of the checks, each against a deliberate violation | 2026-11-20 |
 

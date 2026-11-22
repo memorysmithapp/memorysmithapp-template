@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `scripts/setup-repo.sh` gives the organization's team `contributors` write on the repository, as it does for `maintainers`, and requires both teams to exist. A repository it set up left `contributors` out, so its members fell back to the organization's base permission, read, and could not push a branch, create a milestone or apply a label (#48).
+
 ## [0.5.2] - 2026-11-20
 
 ### Fixed
