@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.3] - 2026-11-22
+
 ### Changed
 
 - `SDLC.md` says two rules an agent was left to guess: a cycle is planned from every open issue, reviewed with the owner before the work starts, those that touch it recommended for inclusion, and leaving one out, or moving it to a later version, is the owner's decision with a reason (§2); and a workflow that delivers to staging or another environment is dispatched only on the owner's go-ahead, a go-ahead to implement not being one to deliver, while pushing a branch needs none (§8). `AGENTS.md` §4 states both in a line each (#49).
@@ -126,7 +128,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `LICENSE` names `memorysmithapp` as the copyright holder (#6).
 - `ARCHITECTURE.md` records that the npm organisation `memorysmithapp` exists on the free plan, so a package published under `@memorysmithapp` declares `"publishConfig": { "access": "public" }`, a package never meant to be published declares `"private": true`, and publishing from CI goes through trusted publishing; ADR-006 and `SDLC.md` §10 point at it (#11).
 
-[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.2...HEAD
+[unreleased]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.3...HEAD
+[0.5.3]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/memorysmithapp/memorysmithapp-template/compare/v0.4.1...v0.5.0
