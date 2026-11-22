@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `SDLC.md` §2: each repository stands on its own. A gap is no longer registered at an origin repository with a sub-issue in every repository it reaches; a problem found in another repository is registered there, as one issue, and comparing with the template is a repository's own work, in its own cycle. `AGENTS.md` §4 says it in one line (#52).
+
 ## [0.5.3] - 2026-11-22
 
 ### Changed
